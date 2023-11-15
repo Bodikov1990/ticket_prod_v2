@@ -1,0 +1,97 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket_prod_v2/router/auto_routes.dart';
+import 'package:ticket_prod_v2/src/authentication/presentation/bloc/authentication_bloc.dart';
+
+@RoutePage()
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  int _titleTapCount = 0;
+
+  final _authenticationBloc = AuthenticationBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _authenticationBloc.add(CheckPingEvent());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _titleTapCount++;
+                  if (_titleTapCount == 20) {
+                    AutoRouter.of(context).push(const SettingsRoute());
+                    _titleTapCount = 0;
+                  }
+                });
+              },
+              child: const Text('Tessera')),
+          centerTitle: true,
+        ),
+        body: BlocListener<AuthenticationBloc, AuthenticationState>(
+          bloc: _authenticationBloc,
+          listener: (context, state) {
+            if (state is CheckedPingErrorState) {
+              _showAlert(
+                  title: "No connect", content: "Check connection with server");
+            } else if (state is AuthenticationErrorState) {
+              _showAlert(
+                  title: state.message, content: state.statusCode.toString());
+            }
+          },
+          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            bloc: _authenticationBloc,
+            builder: (context, state) {
+              if (state is CheckPingState) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is CheckedPingSuccesState) {
+                _authenticationBloc.add(const CheckAuthenticationEvent());
+              } else if (state is CheckedAuthenticationState) {
+                _authenticationBloc.add(AuthenticateEvent(
+                    login: state.user.login ?? '',
+                    password: state.user.password ?? ''));
+              } else if (state is AuthenticatedState) {
+                AutoRouter.of(context).replace(const TabBarRoute());
+              }
+              return Container();
+            },
+          ),
+        ));
+  }
+
+  _showAlert({String? title, String? content}) {
+    final content0 = content ?? '';
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: title != null
+            ? Text(title, style: const TextStyle(fontWeight: FontWeight.w600))
+            : null,
+        content: Text(content0),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Ок',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
