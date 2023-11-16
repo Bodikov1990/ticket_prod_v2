@@ -12,6 +12,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final GetUserUseCase _getUserUseCase = GetUserUseCase();
   final SaveUserUseCase _saveUserUseCase = SaveUserUseCase();
   final AuthenticateUseCase _authenticateUseCase = AuthenticateUseCase();
+  UserModel userModel = UserModel();
 
   SettingsBloc() : super(SettingsInitial()) {
     on<SettingsGetUserEvent>(_getUserHandler);
@@ -23,19 +24,28 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     emit(SettingsGettingUserState());
 
     final result = await _getUserUseCase();
-    result.fold((failure) => emit(SettingsGetUserErrorState()),
-        (user) => emit(SettingsGetUserSuccessState(user)));
+
+    result.fold((failure) => null, (user) => userModel = user);
+    if (userModel.baseURL != null && userModel.baseURL != '') {
+      emit(SettingsGetUserSuccessState(userModel));
+    } else {
+      emit(SettingsGetUserErrorState());
+    }
   }
 
   Future<void> _saveUserHandler(
       SettingsSaveUserEvent event, Emitter<SettingsState> emit) async {
-    UserModel userModel = UserModel();
     userModel.baseURL = event.baseURL;
     userModel.prefix = event.prefix;
     userModel.login = event.login;
     userModel.password = event.password;
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-    await _authenticateUseCase(AuthenticateUseCaseParams(
+    final result = await _authenticateUseCase(AuthenticateUseCaseParams(
         login: userModel.login, password: userModel.password));
+    result.fold((failre) => null, (token) => userModel.accessToken = token);
+
+    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
+    if (userModel.accessToken != null) {
+      emit(SettingsSavedUserState());
+    }
   }
 }

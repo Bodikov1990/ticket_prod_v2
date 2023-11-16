@@ -74,6 +74,10 @@ class _ScannerAppState extends State<ScannerApp> {
           primarySwatch: ThemeViewModel(false).mainRed,
           appBarTheme: ThemeViewModel(false).appBarTheme,
           textTheme: ThemeViewModel(false).textTheme,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: ThemeViewModel(false).bottomBarBackgroundColor,
+              selectedItemColor: ThemeViewModel(false).accentColor,
+              unselectedItemColor: ThemeViewModel(false).grayColor),
           buttonTheme: const ButtonThemeData(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),

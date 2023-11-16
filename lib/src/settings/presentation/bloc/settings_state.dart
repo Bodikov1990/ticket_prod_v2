@@ -1,6 +1,6 @@
 part of 'settings_bloc.dart';
 
-sealed class SettingsState extends Equatable {
+abstract class SettingsState extends Equatable {
   const SettingsState();
 
   @override
@@ -19,6 +19,8 @@ final class SettingsGetUserSuccessState extends SettingsState {
   @override
   List<Object> get props => [userModel];
 }
+
+final class SettingsSavedUserState extends SettingsState {}
 
 final class SettingsGetUserErrorState extends SettingsState {}
 

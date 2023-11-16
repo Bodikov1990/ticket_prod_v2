@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ticket_prod_v2/src/tabbar/presentation/bloc/tabbar_bloc.dart';
+import 'package:ticket_prod_v2/router/auto_routes.dart';
 
 @RoutePage()
 class TabBarPage extends StatelessWidget {
@@ -9,43 +8,36 @@ class TabBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TabbarBloc tabBloc = TabbarBloc();
-
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('TabBar with Bloc'),
-          bottom: TabBar(
+    return AutoTabsRouter(
+      routes: const [
+        MainRoute(),
+        // Tab2Route(),
+        // Tab3Route(),
+      ],
+      builder: (context, child) {
+        final tabsRouter = AutoTabsRouter.of(context);
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('Ticket Prod'),
+          ),
+          body: child,
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
+            currentIndex: tabsRouter.activeIndex,
             onTap: (index) {
-              tabBloc.add(TabUpdated(index));
+              tabsRouter.setActiveIndex(index);
             },
-            tabs: const [
-              Tab(text: 'Tab 1'),
-              Tab(text: 'Tab 2'),
-              Tab(text: 'Tab 3'),
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: 'QR'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.dialpad), label: 'Номер брони'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'Репертуар'),
             ],
           ),
-        ),
-        body: BlocBuilder<TabbarBloc, TabbarState>(
-          bloc: tabBloc,
-          builder: (context, state) {
-            if (state is TabSelected) {
-              switch (state.selectedTabIndex) {
-                case 0:
-                  return const Center(child: Text('Content of Tab 1'));
-                case 1:
-                  return const Center(child: Text('Content of Tab 2'));
-                case 2:
-                  return const Center(child: Text('Content of Tab 3'));
-                default:
-                  return const Center(child: Text('Unknown Tab'));
-              }
-            }
-            return const Center(child: Text('No Tab Selected'));
-          },
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -35,10 +33,6 @@ class AuthenticationBloc
         (failure) =>
             emit(AuthenticationErrorState(failure.message, failure.statusCode)),
         (user) => userModel = user);
-    print(userModel.baseURL);
-    print(userModel.login);
-    print(userModel.password);
-    print(userModel.accessToken);
 
     String? baseURL = userModel.baseURL;
 

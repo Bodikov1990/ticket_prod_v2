@@ -67,9 +67,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 state.userModel.prefix,
                 state.userModel.login,
                 state.userModel.password);
+          } else if (state is SettingsGetUserErrorState) {
+            _addressController.text = 'http://';
           }
         },
         builder: (context, state) {
+          if (state is SettingsSavedUserState) {
+            AutoRouter.of(context).replaceAll([const TabBarRoute()]);
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -87,7 +92,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ElevatedButton(
                     onPressed: () {
                       _setAPI();
-                      AutoRouter.of(context).replace(const TabBarRoute());
                     },
                     child: const Text('Update settings'),
                   ),

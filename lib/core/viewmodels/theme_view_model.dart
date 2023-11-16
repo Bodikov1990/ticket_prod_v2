@@ -43,6 +43,12 @@ class ThemeViewModel extends BaseViewModel {
     return dark ? const Color(0xFF191B27) : Colors.white;
   }
 
+  Color get grayColor {
+    return dark
+        ? const Color(0xFF8C8D93)
+        : const Color.fromARGB(255, 163, 163, 164);
+  }
+
   MaterialColor get primarySwatch {
     return dark ? mainRed : mainRed;
   }
