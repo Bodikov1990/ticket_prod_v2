@@ -30,6 +30,7 @@ Future<String> _apiToken(Environment env) async {
       String? token = '';
       final result = await getUserUseCase();
       result.fold((l) => null, (user) => token = user.accessToken);
+
       return token ?? '';
     case Environment.PRODUCTION:
       return "ec40d076-d3e6-4b20-b7ec-8d02a90858dc";
@@ -45,6 +46,7 @@ Future<String?> _baseUrl(Environment env) async {
       String? baseURL = '';
       final result = await getUserUseCase();
       result.fold((l) => null, (user) => baseURL = user.baseURL);
+
       return baseURL;
     case Environment.PRODUCTION:
       return "https://afisha.api.kinopark.kz";

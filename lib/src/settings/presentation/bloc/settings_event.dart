@@ -25,4 +25,20 @@ class SettingsSaveUserEvent extends SettingsEvent {
   List<Object> get props => [login, password, baseURL, prefix];
 }
 
-class SettingsAuthenticateEvent extends SettingsEvent {}
+class SettingsAuthenticateEvent extends SettingsEvent {
+  final String login;
+  final String password;
+  final String baseURL;
+
+  const SettingsAuthenticateEvent(this.login, this.password, this.baseURL);
+  @override
+  List<Object> get props => [login, password, baseURL];
+}
+
+class SettingsSaveTokenEvent extends SettingsEvent {
+  final String token;
+
+  const SettingsSaveTokenEvent(this.token);
+  @override
+  List<Object> get props => [token];
+}

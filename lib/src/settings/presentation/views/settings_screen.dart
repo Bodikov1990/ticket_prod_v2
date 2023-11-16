@@ -69,10 +69,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 state.userModel.password);
           } else if (state is SettingsGetUserErrorState) {
             _addressController.text = 'http://';
+          } else if (state is SettingsAuthenticateErrorState) {
+            _showAlert(title: state.message, content: state.statusCode);
           }
         },
         builder: (context, state) {
           if (state is SettingsSavedUserState) {
+            _settingsBloc.add(SettingsAuthenticateEvent(
+                state.login, state.password, state.baseURL));
+          } else if (state is SettingsAuthenticatedState) {
+            _settingsBloc.add(SettingsSaveTokenEvent(state.token));
             AutoRouter.of(context).replaceAll([const TabBarRoute()]);
           }
           return SingleChildScrollView(
@@ -112,6 +118,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
+      ),
+    );
+  }
+
+  _showAlert({String? title, String? content}) {
+    final content0 = content ?? '';
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: title != null
+            ? Text(title, style: const TextStyle(fontWeight: FontWeight.w600))
+            : null,
+        content: Text(content0),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Ок',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ticket_prod_v2/src/authentication/domain/usecases/authenticate_usecase.dart';
+import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
+
 import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
 import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
 import 'package:ticket_prod_v2/src/user/domain/usecases/save_user_usecase.dart';
@@ -17,6 +18,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(SettingsInitial()) {
     on<SettingsGetUserEvent>(_getUserHandler);
     on<SettingsSaveUserEvent>(_saveUserHandler);
+    on<SettingsSaveTokenEvent>(_saveTokenHandler);
+    on<SettingsAuthenticateEvent>(_authenticateHandler);
   }
 
   Future<void> _getUserHandler(
@@ -26,7 +29,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final result = await _getUserUseCase();
 
     result.fold((failure) => null, (user) => userModel = user);
-    if (userModel.baseURL != null && userModel.baseURL != '') {
+    String? baseURL = userModel.baseURL;
+    if (baseURL != null && baseURL != '') {
       emit(SettingsGetUserSuccessState(userModel));
     } else {
       emit(SettingsGetUserErrorState());
@@ -39,13 +43,37 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     userModel.prefix = event.prefix;
     userModel.login = event.login;
     userModel.password = event.password;
-    final result = await _authenticateUseCase(AuthenticateUseCaseParams(
-        login: userModel.login, password: userModel.password));
-    result.fold((failre) => null, (token) => userModel.accessToken = token);
 
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-    if (userModel.accessToken != null) {
-      emit(SettingsSavedUserState());
+    final result =
+        await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
+    result.fold((failure) => null, (r) => null);
+    String? login = userModel.login;
+    String? password = userModel.password;
+    String? baseURL = userModel.baseURL;
+    if (login != null && password != null && baseURL != null) {
+      emit(SettingsSavedUserState(
+          login: login, password: password, baseURL: baseURL));
     }
+  }
+
+  _authenticateHandler(
+      SettingsAuthenticateEvent event, Emitter<SettingsState> emit) async {
+    final result = await _authenticateUseCase(AuthenticateUseCaseParams(
+        login: event.login, password: event.password, baseURL: event.baseURL));
+    String? localToken = '';
+    result.fold(
+        (failure) => emit(SettingsAuthenticateErrorState(
+            failure.message, failure.statusCode.toString())),
+        (token) => localToken = token);
+    print("SettingsBloc $localToken ");
+    if (localToken != null && localToken != '') {
+      emit(SettingsAuthenticatedState(localToken!));
+    }
+  }
+
+  Future<void> _saveTokenHandler(
+      SettingsSaveTokenEvent event, Emitter<SettingsState> emit) async {
+    userModel.accessToken = event.token;
+    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:ticket_prod_v2/router/auto_routes.dart';
 
 @RoutePage()
 class MainPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class MainPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Navigator.pushNamed(context, '/qrscan');
+                AutoRouter.of(context).push(const QRScannerRoute());
               },
               child: const Text(
                 'Scan QR',
