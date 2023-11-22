@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, library_private_types_in_public_api
 import 'dart:io' show Platform;
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -18,12 +18,6 @@ final supportedLocales = [
   const Locale('en', ''),
 ];
 
-enum Environment {
-  QR,
-  PRODUCTION,
-}
-
-const DEFAULT_ENV = Environment.QR;
 List<CameraDescription> cameras = [];
 
 Future<void> main() async {
@@ -33,8 +27,12 @@ Future<void> main() async {
     cameras = await availableCameras();
   }
 
-  await di.init(DEFAULT_ENV);
-  runApp(const ScannerApp());
+  // await di.init();
+  runApp(
+    const RestartWidget(
+      child: ScannerApp(),
+    ),
+  );
 }
 
 class ScannerApp extends StatefulWidget {
@@ -69,15 +67,15 @@ class _ScannerAppState extends State<ScannerApp> {
         locale: const Locale('ru', ''),
         theme: ThemeData(
           fontFamily: "Open Sans",
-          primaryColor: ThemeViewModel(false).mainRed,
-          canvasColor: ThemeViewModel(false).canvasColor,
-          primarySwatch: ThemeViewModel(false).mainRed,
-          appBarTheme: ThemeViewModel(false).appBarTheme,
-          textTheme: ThemeViewModel(false).textTheme,
+          primaryColor: ThemeViewModel().mainRed,
+          canvasColor: ThemeViewModel().canvasColor,
+          primarySwatch: ThemeViewModel().mainRed,
+          appBarTheme: ThemeViewModel().appBarTheme,
+          textTheme: ThemeViewModel().textTheme,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-              backgroundColor: ThemeViewModel(false).bottomBarBackgroundColor,
-              selectedItemColor: ThemeViewModel(false).accentColor,
-              unselectedItemColor: ThemeViewModel(false).grayColor),
+              backgroundColor: ThemeViewModel().bottomBarBackgroundColor,
+              selectedItemColor: ThemeViewModel().accentColor,
+              unselectedItemColor: ThemeViewModel().grayColor),
           buttonTheme: const ButtonThemeData(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -86,5 +84,54 @@ class _ScannerAppState extends State<ScannerApp> {
         ),
       );
     });
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  const RestartWidget({super.key, required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEnv();
+  }
+
+  Future<bool> _loadEnv() async {
+    await di.init();
+    setState(() {
+      loading = false;
+    });
+    return true;
+  }
+
+  void restartApp() async {
+    await GetIt.instance.reset();
+    await _loadEnv();
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: loading ? Container() : widget.child,
+    );
   }
 }

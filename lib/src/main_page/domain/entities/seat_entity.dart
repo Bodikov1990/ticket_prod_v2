@@ -9,9 +9,12 @@ class SeatEntity extends Equatable {
   final int? price;
   final String? row;
   final String? seat;
+  @JsonKey(name: "discount_id")
   final String? discountId;
+  @JsonKey(name: "discount_name")
   final String? discountName;
   final String? status;
+  @JsonKey(name: "zone_id")
   final String? zoneId;
   const SeatEntity({
     this.id,

@@ -47,8 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
               _showAlert(
                   title: "No connect", content: "Check connection with server");
             } else if (state is AuthenticationErrorState) {
-              _showAlert(
-                  title: state.message, content: state.statusCode.toString());
+              // _showAlert(
+              //     title: state.message, content: state.statusCode.toString());
             }
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(

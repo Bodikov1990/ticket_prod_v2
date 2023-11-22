@@ -36,7 +36,8 @@ class AuthenticationRemoteDataSourceImpl
       rethrow;
     } catch (e) {
       if (e is DioException) {
-        print("authenticate ${e.message} ${e.response?.statusMessage ?? ""}");
+        debugPrint(
+            "authenticate ${e.message} ${e.response?.statusMessage ?? ""}");
       }
       throw APIExeption(message: e.toString(), statusCode: 507);
     }
@@ -55,9 +56,8 @@ class AuthenticationRemoteDataSourceImpl
       rethrow;
     } catch (e) {
       if (e is DioException) {
-        if (kDebugMode) {
-          print("${e.message} ${e.response?.statusMessage ?? ""}");
-        }
+        debugPrint("${e.message} ${e.response?.statusMessage ?? ""}");
+
         throw APIExeption(
             message: e.message ?? "Opps",
             statusCode: e.response?.statusCode ?? 505);

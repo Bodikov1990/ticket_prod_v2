@@ -15,6 +15,17 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    DetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsScreen(
+          key: args.key,
+          ticket: args.ticket,
+          onTapOk: args.onTapOk,
+        ),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -33,6 +44,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const QRScannerScreen(),
       );
     },
+    RezervationNumberRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RezervationNumberScreen(),
+      );
+    },
     SettingsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -46,6 +63,49 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [DetailsScreen]
+class DetailsRoute extends PageRouteInfo<DetailsRouteArgs> {
+  DetailsRoute({
+    Key? key,
+    required TicketEntity ticket,
+    required void Function(bool) onTapOk,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsRoute.name,
+          args: DetailsRouteArgs(
+            key: key,
+            ticket: ticket,
+            onTapOk: onTapOk,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsRoute';
+
+  static const PageInfo<DetailsRouteArgs> page =
+      PageInfo<DetailsRouteArgs>(name);
+}
+
+class DetailsRouteArgs {
+  const DetailsRouteArgs({
+    this.key,
+    required this.ticket,
+    required this.onTapOk,
+  });
+
+  final Key? key;
+
+  final TicketEntity ticket;
+
+  final void Function(bool) onTapOk;
+
+  @override
+  String toString() {
+    return 'DetailsRouteArgs{key: $key, ticket: $ticket, onTapOk: $onTapOk}';
+  }
 }
 
 /// generated route for
@@ -86,6 +146,20 @@ class QRScannerRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'QRScannerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RezervationNumberScreen]
+class RezervationNumberRoute extends PageRouteInfo<void> {
+  const RezervationNumberRoute({List<PageRouteInfo>? children})
+      : super(
+          RezervationNumberRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RezervationNumberRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

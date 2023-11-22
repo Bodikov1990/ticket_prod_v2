@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ticket_prod_v2/router/auto_routes.dart';
+import 'package:ticket_prod_v2/main.dart';
+
 import 'package:ticket_prod_v2/src/settings/presentation/bloc/settings_bloc.dart';
 
 @RoutePage()
@@ -79,7 +80,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 state.login, state.password, state.baseURL));
           } else if (state is SettingsAuthenticatedState) {
             _settingsBloc.add(SettingsSaveTokenEvent(state.token));
-            AutoRouter.of(context).replaceAll([const TabBarRoute()]);
+            // AutoRouter.of(context).replaceAll([const TabBarRoute()]);
+            RestartWidget.restartApp(context);
           }
           return SingleChildScrollView(
             child: Padding(

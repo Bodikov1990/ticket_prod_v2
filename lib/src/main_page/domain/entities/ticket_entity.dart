@@ -12,6 +12,7 @@ class TicketEntity extends Equatable {
   final String? movie;
   final String? contract;
   final String? hall;
+  @JsonKey(name: "seance_date")
   final String? seanceDate;
   final List<SeatEntity>? seats;
 

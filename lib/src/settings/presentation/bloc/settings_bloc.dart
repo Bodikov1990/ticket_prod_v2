@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
 
 import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
@@ -65,7 +66,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         (failure) => emit(SettingsAuthenticateErrorState(
             failure.message, failure.statusCode.toString())),
         (token) => localToken = token);
-    print("SettingsBloc $localToken ");
+    debugPrint("SettingsBloc $localToken ");
     if (localToken != null && localToken != '') {
       emit(SettingsAuthenticatedState(localToken!));
     }

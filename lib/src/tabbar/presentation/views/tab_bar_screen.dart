@@ -11,7 +11,7 @@ class TabBarPage extends StatelessWidget {
     return AutoTabsRouter(
       routes: const [
         MainRoute(),
-        // Tab2Route(),
+        RezervationNumberRoute(),
         // Tab3Route(),
       ],
       builder: (context, child) {
@@ -23,7 +23,7 @@ class TabBarPage extends StatelessWidget {
           ),
           body: child,
           bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
+            type: BottomNavigationBarType.fixed,
             currentIndex: tabsRouter.activeIndex,
             onTap: (index) {
               tabsRouter.setActiveIndex(index);

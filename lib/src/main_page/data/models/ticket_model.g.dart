@@ -10,7 +10,7 @@ TicketModel _$TicketModelFromJson(Map<String, dynamic> json) => TicketModel(
       id: json['id'] as String?,
       number: json['number'] as String?,
       movie: json['movie'] as String?,
-      seanceDate: json['seanceDate'] as String?,
+      seanceDate: json['seance_date'] as String?,
       hall: json['hall'] as String?,
       contract: json['contract'] as String?,
       status: json['status'] as int?,
@@ -27,6 +27,6 @@ Map<String, dynamic> _$TicketModelToJson(TicketModel instance) =>
       'movie': instance.movie,
       'contract': instance.contract,
       'hall': instance.hall,
-      'seanceDate': instance.seanceDate,
+      'seance_date': instance.seanceDate,
       'seats': instance.seats,
     };

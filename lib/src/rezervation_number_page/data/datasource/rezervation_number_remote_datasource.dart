@@ -1,23 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
 import 'package:ticket_prod_v2/src/main_page/data/models/ticket_model.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 
-abstract class MainQRRemoteDataSource {
-  Future<TicketModel> getRezervation(String id);
+abstract class RezervationNumberRemoteDataSource {
+  Future<TicketEntity> getRezervationNumber(String number);
 }
 
-class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
+class RezervationNumberRemoteDataSourceImpl
+    implements RezervationNumberRemoteDataSource {
   final Dio _dio = GetIt.instance<Dio>();
 
   @override
-  Future<TicketModel> getRezervation(String id) async {
+  Future<TicketEntity> getRezervationNumber(String number) async {
     _dio.options.headers['User-Agent'] = 'ios';
     try {
       Response response = await _dio.get(
-        '/api/ticket/$id',
+        '/api/ticket/$number/number',
       );
 
       if (response.statusCode != 200) {

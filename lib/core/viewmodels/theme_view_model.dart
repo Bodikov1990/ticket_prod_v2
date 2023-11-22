@@ -6,12 +6,6 @@ import 'package:ticket_prod_v2/core/viewmodels/base.dart';
 class ThemeViewModel extends BaseViewModel {
   bool dark = false;
 
-  ThemeViewModel(bool? isDark) {
-    isDark ??=
-        PlatformDispatcher.instance.platformBrightness == Brightness.dark;
-    dark = isDark == true;
-  }
-
   Image get appBarLogo {
     return Image.asset(
       dark

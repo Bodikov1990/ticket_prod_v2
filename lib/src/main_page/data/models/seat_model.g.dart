@@ -11,10 +11,10 @@ SeatModel _$SeatModelFromJson(Map<String, dynamic> json) => SeatModel(
       price: json['price'] as int?,
       row: json['row'] as String?,
       seat: json['seat'] as String?,
-      discountId: json['discountId'] as String?,
-      discountName: json['discountName'] as String?,
+      discountId: json['discount_id'] as String?,
+      discountName: json['discount_name'] as String?,
       status: json['status'] as String?,
-      zoneId: json['zoneId'] as String?,
+      zoneId: json['zone_id'] as String?,
     );
 
 Map<String, dynamic> _$SeatModelToJson(SeatModel instance) => <String, dynamic>{
@@ -22,8 +22,8 @@ Map<String, dynamic> _$SeatModelToJson(SeatModel instance) => <String, dynamic>{
       'price': instance.price,
       'row': instance.row,
       'seat': instance.seat,
-      'discountId': instance.discountId,
-      'discountName': instance.discountName,
+      'discount_id': instance.discountId,
+      'discount_name': instance.discountName,
       'status': instance.status,
-      'zoneId': instance.zoneId,
+      'zone_id': instance.zoneId,
     };
