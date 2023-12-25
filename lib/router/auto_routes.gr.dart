@@ -44,6 +44,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const QRScannerScreen(),
       );
     },
+    RepertoireRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RepertoireScreen(),
+      );
+    },
     RezervationNumberRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -146,6 +152,20 @@ class QRScannerRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'QRScannerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RepertoireScreen]
+class RepertoireRoute extends PageRouteInfo<void> {
+  const RepertoireRoute({List<PageRouteInfo>? children})
+      : super(
+          RepertoireRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RepertoireRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

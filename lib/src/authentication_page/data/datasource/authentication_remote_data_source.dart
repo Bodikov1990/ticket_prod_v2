@@ -21,9 +21,20 @@ class AuthenticationRemoteDataSourceImpl
       String? baseURL}) async {
     AuthenticationModel authModel =
         AuthenticationModel(login: login, password: password);
+
+    String url = '';
+    if (baseURL == null) {
+      url = _dio.options.baseUrl;
+      debugPrint("authenticate baseURL null, url $url");
+    } else {
+      _dio.options.baseUrl = baseURL;
+    }
+
+    debugPrint("authenticate baseURL ${_dio.options.baseUrl}");
+
     try {
       Response response =
-          await _dio.post('$baseURL/api/auth/login', data: authModel.toJson());
+          await _dio.post('$url/api/auth/login', data: authModel.toJson());
 
       if (response.statusCode != 200) {
         throw APIExeption(
@@ -35,6 +46,7 @@ class AuthenticationRemoteDataSourceImpl
     } on APIExeption {
       rethrow;
     } catch (e) {
+      debugPrint("authenticate ${e.toString()} ");
       if (e is DioException) {
         debugPrint(
             "authenticate ${e.message} ${e.response?.statusMessage ?? ""}");
@@ -55,6 +67,7 @@ class AuthenticationRemoteDataSourceImpl
     } on APIExeption {
       rethrow;
     } catch (e) {
+      debugPrint("checkPing ${e.toString()} ");
       if (e is DioException) {
         debugPrint("${e.message} ${e.response?.statusMessage ?? ""}");
 

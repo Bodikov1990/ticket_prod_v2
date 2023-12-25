@@ -11,6 +11,9 @@ import 'package:ticket_prod_v2/src/details_page/repository/details_repository.da
 import 'package:ticket_prod_v2/src/main_page/data/datasource/main_qr_remote_datasource.dart';
 import 'package:ticket_prod_v2/src/main_page/data/repositories/main_qr_repository_impl.dart';
 import 'package:ticket_prod_v2/src/main_page/repository/main_qr_repository.dart';
+import 'package:ticket_prod_v2/src/repertoire_page/data/datasources/repertoire_remote_datasource.dart';
+import 'package:ticket_prod_v2/src/repertoire_page/data/repositories/repertoire_repository_impl.dart';
+import 'package:ticket_prod_v2/src/repertoire_page/repository/repertoire_repository.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/data/datasource/rezervation_number_remote_datasource.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/data/repositories/rezervation_number_repository_impl.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/repository/rezervation_number_repository.dart';
@@ -46,4 +49,10 @@ void init() {
 
   getIt.registerLazySingleton<DetailsRemoteDataSource>(
       () => DetailsRemoteDataSourceImpl());
+
+  getIt.registerLazySingleton<RepertoireRepository>(
+      () => RepertoireRepositoryImpl());
+
+  getIt.registerLazySingleton<RepertoireRemoteDataSource>(
+      () => RepertoireRemoteDataSourceImpl());
 }

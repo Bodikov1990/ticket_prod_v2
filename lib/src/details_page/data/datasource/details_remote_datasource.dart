@@ -37,6 +37,7 @@ class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
     } on APIExeption {
       rethrow;
     } catch (e) {
+      debugPrint("activate ${e.toString()} ");
       if (e is DioException) {
         debugPrint("activate ${e.message} ${e.response?.statusMessage ?? ""}");
         throw APIExeption(

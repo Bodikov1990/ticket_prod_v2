@@ -27,7 +27,6 @@ Future<void> main() async {
     cameras = await availableCameras();
   }
 
-  // await di.init();
   runApp(
     const RestartWidget(
       child: ScannerApp(),

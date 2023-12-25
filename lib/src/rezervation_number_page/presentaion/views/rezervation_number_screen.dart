@@ -57,7 +57,8 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
             _reservationNumber.text = prefix;
           }
         } else if (state is RezervationGetTicketSuccesState) {
-          if (state.ticketEntity.status == 4) {
+          if (state.ticketEntity.status == 4 ||
+              state.ticketEntity.status == 5) {
             _showAlert(
                 title: 'Ошибка',
                 content: 'Билет отправлен на возврат. Спасибо за обращение!');

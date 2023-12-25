@@ -121,6 +121,9 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
           title: "Ошибка",
           message:
               "Извините, время активации доступно за 30 минут до начала сеанса. Пожалуйста, попробуйте позже."));
+    } else {
+      emit(SeatActivateErrorState(
+          title: "Ошибка!", message: "Неизвестная ошибка!"));
     }
   }
 }

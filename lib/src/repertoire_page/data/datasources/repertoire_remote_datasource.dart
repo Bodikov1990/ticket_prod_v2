@@ -2,23 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
-import 'package:ticket_prod_v2/src/main_page/data/models/ticket_model.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/schedule_entity.dart';
 
-abstract class RezervationNumberRemoteDataSource {
-  Future<TicketEntity> getRezervationNumber(String number);
+abstract class RepertoireRemoteDataSource {
+  Future<List<ScheduleEntity>> getSchedule({required String data});
 }
 
-class RezervationNumberRemoteDataSourceImpl
-    implements RezervationNumberRemoteDataSource {
+class RepertoireRemoteDataSourceImpl implements RepertoireRemoteDataSource {
   final Dio _dio = GetIt.instance<Dio>();
 
   @override
-  Future<TicketEntity> getRezervationNumber(String number) async {
-    _dio.options.headers['User-Agent'] = 'ios';
+  Future<List<ScheduleEntity>> getSchedule({required String data}) async {
     try {
       Response response = await _dio.get(
-        '/api/ticket/$number/number',
+        '/api/schedule?date_from=${data}T10:00:00&sort=movie.created_at:desc&sort=seance.timeframe.start:asc&skip=0&limit=0',
       );
 
       if (response.statusCode != 200) {
@@ -27,11 +24,13 @@ class RezervationNumberRemoteDataSourceImpl
             statusCode: response.statusCode ?? 0);
       }
 
-      return TicketModel.fromJson(response.data);
+      return (response.data as List<dynamic>)
+          .map((raw) => ScheduleEntity.fromJson(raw))
+          .toList();
     } on APIExeption {
       rethrow;
     } catch (e) {
-      debugPrint("getRezervationNumber ${e.toString()} ");
+      debugPrint("getSchedule ${e.toString()} ");
       if (e is DioException) {
         debugPrint("${e.message} ${e.response?.statusMessage ?? ""}");
 

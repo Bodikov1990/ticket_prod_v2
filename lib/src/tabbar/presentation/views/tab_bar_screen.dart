@@ -9,11 +9,7 @@ class TabBarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [
-        MainRoute(),
-        RezervationNumberRoute(),
-        // Tab3Route(),
-      ],
+      routes: const [MainRoute(), RezervationNumberRoute(), RepertoireRoute()],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(

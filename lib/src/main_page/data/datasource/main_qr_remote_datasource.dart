@@ -30,6 +30,7 @@ class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
     } on APIExeption {
       rethrow;
     } catch (e) {
+      debugPrint("getRezervation ${e.toString()} ");
       if (e is DioException) {
         debugPrint("${e.message} ${e.response?.statusMessage ?? ""}");
 
