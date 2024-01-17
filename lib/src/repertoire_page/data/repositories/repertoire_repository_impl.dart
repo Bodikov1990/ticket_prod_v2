@@ -14,7 +14,7 @@ class RepertoireRepositoryImpl implements RepertoireRepository {
   @override
   ResultFuture<List<ScheduleModel>> getSchedule({required String data}) async {
     try {
-      final result = await _dataSource.getSchedule(data: data);
+      final result = await _dataSource.getSchedule(date: data);
 
       return Right(result
           .map((schedule) => ScheduleModel(

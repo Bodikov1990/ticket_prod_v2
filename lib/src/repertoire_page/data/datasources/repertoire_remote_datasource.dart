@@ -5,17 +5,18 @@ import 'package:ticket_prod_v2/core/errors/exeptions.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/schedule_entity.dart';
 
 abstract class RepertoireRemoteDataSource {
-  Future<List<ScheduleEntity>> getSchedule({required String data});
+  Future<List<ScheduleEntity>> getSchedule({required String date});
 }
 
 class RepertoireRemoteDataSourceImpl implements RepertoireRemoteDataSource {
   final Dio _dio = GetIt.instance<Dio>();
 
   @override
-  Future<List<ScheduleEntity>> getSchedule({required String data}) async {
+  Future<List<ScheduleEntity>> getSchedule({required String date}) async {
+    print(date);
     try {
       Response response = await _dio.get(
-        '/api/schedule?date_from=${data}T10:00:00&sort=movie.created_at:desc&sort=seance.timeframe.start:asc&skip=0&limit=0',
+        '/api/schedule?date_from=$date&sort=movie.created_at:desc&sort=seance.timeframe.start:asc&skip=0&limit=0',
       );
 
       if (response.statusCode != 200) {
@@ -24,7 +25,7 @@ class RepertoireRemoteDataSourceImpl implements RepertoireRemoteDataSource {
             statusCode: response.statusCode ?? 0);
       }
 
-      return (response.data as List<dynamic>)
+      return (response.data['data'] as List<dynamic>)
           .map((raw) => ScheduleEntity.fromJson(raw))
           .toList();
     } on APIExeption {

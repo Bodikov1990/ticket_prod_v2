@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:ticket_prod_v2/injections/di.dart' as di;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -62,7 +63,8 @@ class _ScannerAppState extends State<ScannerApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate
         ],
-        routerConfig: _appRouter.config(),
+        routerConfig: _appRouter.config(
+            navigatorObservers: () => [TalkerRouteObserver(GetIt.I<Talker>())]),
         locale: const Locale('ru', ''),
         theme: ThemeData(
           fontFamily: "Open Sans",

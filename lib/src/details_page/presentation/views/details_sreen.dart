@@ -55,7 +55,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       listener: (context, state) {
         if (state is DetailsTicketStatusError) {
           _showAlert(
-              context: context, title: state.title, content: state.message);
+              context_: context, title: state.title, content: state.message);
         }
       },
       child: BlocBuilder<DetailsBloc, DetailsState>(
@@ -79,9 +79,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,
               onPressed: () {
-                widget.onTapOk(true);
-                _activateSeats();
-                context.popRoute();
+                if (widget.ticket.status == 3) {
+                  widget.onTapOk(true);
+                  context.popRoute();
+                } else {
+                  _activateSeats();
+                  widget.onTapOk(true);
+                  context.popRoute();
+                }
               },
               child: const Text('OK'),
             ),
@@ -189,7 +194,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 
-  _showAlert({required BuildContext context, String? title, String? content}) {
+  _showAlert({required BuildContext context_, String? title, String? content}) {
     final content0 = content ?? '';
     showDialog(
       context: context,

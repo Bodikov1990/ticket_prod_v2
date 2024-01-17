@@ -45,9 +45,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     RepertoireRoute.name: (routeData) {
+      final args = routeData.argsAs<RepertoireRouteArgs>(
+          orElse: () => const RepertoireRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const RepertoireScreen(),
+        child: RepertoireScreen(
+          key: args.key,
+          date: args.date,
+        ),
       );
     },
     RezervationNumberRoute.name: (routeData) {
@@ -158,16 +163,40 @@ class QRScannerRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [RepertoireScreen]
-class RepertoireRoute extends PageRouteInfo<void> {
-  const RepertoireRoute({List<PageRouteInfo>? children})
-      : super(
+class RepertoireRoute extends PageRouteInfo<RepertoireRouteArgs> {
+  RepertoireRoute({
+    Key? key,
+    DateTime? date,
+    List<PageRouteInfo>? children,
+  }) : super(
           RepertoireRoute.name,
+          args: RepertoireRouteArgs(
+            key: key,
+            date: date,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'RepertoireRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<RepertoireRouteArgs> page =
+      PageInfo<RepertoireRouteArgs>(name);
+}
+
+class RepertoireRouteArgs {
+  const RepertoireRouteArgs({
+    this.key,
+    this.date,
+  });
+
+  final Key? key;
+
+  final DateTime? date;
+
+  @override
+  String toString() {
+    return 'RepertoireRouteArgs{key: $key, date: $date}';
+  }
 }
 
 /// generated route for

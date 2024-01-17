@@ -8,6 +8,8 @@ abstract class RezervationNumberEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class RezervationInitialEvent extends RezervationNumberEvent {}
+
 class RezervationGetUserEvent extends RezervationNumberEvent {}
 
 class RezervationGetNumberEvent extends RezervationNumberEvent {

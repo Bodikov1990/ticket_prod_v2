@@ -12,12 +12,12 @@ class GetScheduleUseCase
   @override
   ResultFuture<List<ScheduleModel>> call(
           GetScheduleUseCaseParams params) async =>
-      _repository.getSchedule(data: params.data);
+      _repository.getSchedule(data: params.date);
 }
 
 class GetScheduleUseCaseParams {
-  final String data;
+  final String date;
   GetScheduleUseCaseParams({
-    required this.data,
+    required this.date,
   });
 }

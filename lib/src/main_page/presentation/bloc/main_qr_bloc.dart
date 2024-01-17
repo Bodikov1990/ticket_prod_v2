@@ -17,16 +17,22 @@ class MainQrBloc extends Bloc<MainQrEvent, MainQrState> {
       MainQrGetRezervationEvent event, Emitter<MainQrState> emit) async {
     final result =
         await _getRezervationUseCase(GetRezervationUseCaseParams(id: event.id));
-    TicketEntity ticketEntity = const TicketEntity();
+    TicketEntity? ticketEntity;
     result.fold(
         (failure) =>
             emit(MainQrGetRezervationErrorState(message: failure.message)),
         (ticket) => ticketEntity = ticket);
-    if (ticketEntity.status != 4) {
-      emit(MainQrGetRezervationSuccesState(ticket: ticketEntity));
-    } else {
-      emit(const MainQrGetRezervationErrorState(
+    if (ticketEntity?.status == 0 ||
+        ticketEntity?.status == 1 ||
+        ticketEntity?.status == 4 ||
+        ticketEntity?.status == 5) {
+      emit(MainQrGetRezervationErrorState(
           message: "Билет отправлен на возврат. Спасибо за обращение!"));
+    } else {
+      if (ticketEntity != null) {
+        emit(MainQrGetRezervationSuccesState(
+            ticket: ticketEntity ?? const TicketEntity()));
+      }
     }
   }
 }

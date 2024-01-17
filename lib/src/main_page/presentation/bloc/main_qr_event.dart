@@ -2,15 +2,13 @@
 part of 'main_qr_bloc.dart';
 
 abstract class MainQrEvent extends Equatable {
-  const MainQrEvent();
-
   @override
   List<Object> get props => [];
 }
 
 class MainQrGetRezervationEvent extends MainQrEvent {
   final String id;
-  const MainQrGetRezervationEvent({
+  MainQrGetRezervationEvent({
     required this.id,
   });
 

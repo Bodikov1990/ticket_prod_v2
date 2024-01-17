@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:google_mlkit_commons/google_mlkit_commons.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 
 double translateX(
     double x, InputImageRotation rotation, Size size, Size absoluteImageSize) {
