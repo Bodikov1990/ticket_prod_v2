@@ -22,10 +22,9 @@ dependencies:
   shared_preferences: ^2.2.1
   auto_route: ^7.8.3
   get_it: ^7.6.4
-  firebase_performance_dio: ^0.6.0
   curl_logger_dio_interceptor: ^1.0.0
   camera: ^0.10.5+5
-  provider: ^6.1.1
+  
   flutter_localizations:
     sdk: flutter
   bloc: ^8.1.2

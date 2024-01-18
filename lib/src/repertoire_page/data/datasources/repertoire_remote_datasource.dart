@@ -13,7 +13,6 @@ class RepertoireRemoteDataSourceImpl implements RepertoireRemoteDataSource {
 
   @override
   Future<List<ScheduleEntity>> getSchedule({required String date}) async {
-    print(date);
     try {
       Response response = await _dio.get(
         '/api/schedule?date_from=$date&sort=movie.created_at:desc&sort=seance.timeframe.start:asc&skip=0&limit=0',
