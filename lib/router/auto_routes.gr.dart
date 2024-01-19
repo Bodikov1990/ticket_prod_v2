@@ -73,6 +73,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TabBarPage(),
       );
     },
+    TextRecognizerRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TextRecognizerScreen(),
+      );
+    },
   };
 }
 
@@ -237,6 +243,20 @@ class TabBarRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TabBarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TextRecognizerScreen]
+class TextRecognizerRoute extends PageRouteInfo<void> {
+  const TextRecognizerRoute({List<PageRouteInfo>? children})
+      : super(
+          TextRecognizerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TextRecognizerRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

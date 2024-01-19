@@ -10,6 +10,8 @@ abstract class RezervationNumberState extends Equatable {
 
 class RezervationNumberInitial extends RezervationNumberState {}
 
+class RezervationNumberLoadingState extends RezervationNumberState {}
+
 class RezervationGetUserSuccesState extends RezervationNumberState {
   final UserModel userModel;
   const RezervationGetUserSuccesState({

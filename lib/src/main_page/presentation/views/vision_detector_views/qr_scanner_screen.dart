@@ -23,19 +23,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   bool _isBusy = false;
   CustomPaint? _customPaint;
   String? _text;
-  final Set<String> _processedBarcodes = {};
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    clearBarcodes();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    clearBarcodes();
-  }
 
   @override
   void dispose() {
@@ -43,10 +30,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     _canProcess = false;
     _barcodeScanner.close();
     super.dispose();
-  }
-
-  void clearBarcodes() {
-    _processedBarcodes.clear();
   }
 
   Future<void> _processImage(InputImage inputImage) async {

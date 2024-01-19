@@ -32,7 +32,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ticketStatus = 'Билеты уже активированы! ❗';
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
-      startTime = DateFormat('yyyy.MM.dd HH:mm').format(startTimeFromSource);
+      startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
       String seats = _buildSeatList(_ticketEntity.seats);
       emit(DetailsTicketStatusActivated(
           ticketStatus: ticketStatus,
@@ -44,7 +44,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ticketStatus = 'Новый ✅';
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
-      startTime = DateFormat('yyyy.MM.dd HH:mm').format(startTimeFromSource);
+      startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
       seats = _buildSeatList(_ticketEntity.seats);
       emit(DetailsTicketStatusNew(
           ticketEntity: _ticketEntity,

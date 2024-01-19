@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="ticket_prod_v2"
+        android:label="Ticket Prod V2"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icons"
         android:roundIcon="@mipmap/launcher_icons_round">

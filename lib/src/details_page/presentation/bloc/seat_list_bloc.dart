@@ -105,6 +105,7 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     final activateEntity = ActivateEntity(seats: newSeats, comment: "");
     debugPrint(
         "--- Activating seats: ${newSeats.length}, Ticket ID: ${event.ticketID}");
+    emit(SeatListActivatingState());
     final result = await _activateUseCase(ActivateUseCaseParams(
         ticketID: event.ticketID, activateEntity: activateEntity));
 

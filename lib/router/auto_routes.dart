@@ -6,6 +6,7 @@ import 'package:ticket_prod_v2/src/details_page/presentation/views/details_sreen
 import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/main_screen.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/qr_scanner_screen.dart';
+import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/text_detector_screen.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/presentation/views/repertoire_screen.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/presentaion/views/rezervation_number_screen.dart';
 import 'package:ticket_prod_v2/src/settings/presentation/views/settings_screen.dart';
@@ -20,6 +21,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoginRoute.page, path: '/'),
         AutoRoute(page: SettingsRoute.page),
         AutoRoute(page: QRScannerRoute.page),
+        AutoRoute(page: TextRecognizerRoute.page),
         AutoRoute(page: DetailsRoute.page),
         AutoRoute(page: TabBarRoute.page, path: '/tab-bar', children: [
           AutoRoute(page: MainRoute.page, path: 'tab1'),

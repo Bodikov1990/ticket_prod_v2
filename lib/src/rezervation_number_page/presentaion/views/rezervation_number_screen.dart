@@ -99,6 +99,11 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
           }
         },
         builder: (context, state) {
+          if (state is RezervationNumberLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -144,6 +149,13 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                   ],
                 ),
               )),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.red,
+                onPressed: () {
+                  AutoRouter.of(context).push(const TextRecognizerRoute());
+                },
+                child: const Icon(Icons.scanner),
+              ),
             ),
           );
         },

@@ -2,6 +2,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
@@ -49,18 +51,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextMain) {
     return BlocListener<DetailsBloc, DetailsState>(
       bloc: _detailsBloc,
-      listener: (context, state) {
+      listener: (listenerContext, state) {
         if (state is DetailsTicketStatusError) {
           _showAlert(
-              context_: context, title: state.title, content: state.message);
+            contextMain: contextMain,
+            title: state.title,
+            content: state.message,
+            onOkPressed: () {
+              widget.onTapOk(true);
+              GetIt.I<Talker>().debug('Popping route DetailsTicketStatusError');
+            },
+          );
         }
       },
       child: BlocBuilder<DetailsBloc, DetailsState>(
         bloc: _detailsBloc,
-        builder: (context, state) {
+        builder: (builderContext, state) {
           Color backgroundColor = scaffoldColor;
 
           if (state is DetailsTicketStatusNew) {
@@ -71,26 +80,57 @@ class _DetailsScreenState extends State<DetailsScreen> {
           }
 
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("Детали билета"),
-            ),
-            backgroundColor: backgroundColor,
-            body: _buildBodyBasedOnState(state),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: Colors.red,
-              onPressed: () {
-                if (widget.ticket.status == 3) {
-                  widget.onTapOk(true);
-                  context.popRoute();
-                } else {
-                  _activateSeats();
-                  widget.onTapOk(true);
-                  context.popRoute();
-                }
-              },
-              child: const Text('OK'),
-            ),
-          );
+              appBar: AppBar(
+                title: const Text("Детали билета"),
+              ),
+              backgroundColor: backgroundColor,
+              body: _buildBodyBasedOnState(state),
+              floatingActionButton: BlocListener<SeatListBloc, SeatListState>(
+                bloc: _seatListBloc,
+                listener: (context, state) {
+                  if (state is SeatActivateErrorState) {
+                    _showAlert(
+                      contextMain: contextMain,
+                      title: state.title,
+                      content: state.message,
+                      onOkPressed: () {
+                        widget.onTapOk(true);
+                        GetIt.I<Talker>()
+                            .debug('Popping route SeatActivateErrorState');
+                        AutoRouter.of(contextMain).popUntilRoot();
+                      },
+                    );
+                  } else if (state is SeatActivatedState) {
+                    _showAlert(
+                      contextMain: contextMain,
+                      title: state.title,
+                      content: state.message,
+                      onOkPressed: () {
+                        widget.onTapOk(true);
+                        GetIt.I<Talker>()
+                            .debug('Popping route SeatActivatedState');
+                        AutoRouter.of(contextMain).popUntilRoot();
+                      },
+                    );
+                  }
+                },
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  onPressed: () {
+                    if (widget.ticket.status == 3) {
+                      widget.onTapOk(true);
+                      contextMain.popRoute();
+                    } else {
+                      _activateSeats();
+                      // if (state is SeatActivatedState) {
+                      //   widget.onTapOk(true);
+                      //   context.popRoute();
+                      // }
+                    }
+                  },
+                  child: const Text('OK'),
+                ),
+              ));
         },
       ),
     );
@@ -194,10 +234,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 
-  _showAlert({required BuildContext context_, String? title, String? content}) {
+  _showAlert({
+    required BuildContext contextMain,
+    String? title,
+    String? content,
+    VoidCallback? onOkPressed,
+  }) {
     final content0 = content ?? '';
     showDialog(
-      context: context,
+      context: contextMain,
       builder: (context) => AlertDialog(
         title: title != null
             ? Text(title, style: const TextStyle(fontWeight: FontWeight.w600))
@@ -207,6 +252,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
           TextButton(
             onPressed: () {
               AutoRouter.of(context).pop();
+              if (onOkPressed != null) {
+                onOkPressed();
+              }
             },
             child: const Text(
               'Ок',

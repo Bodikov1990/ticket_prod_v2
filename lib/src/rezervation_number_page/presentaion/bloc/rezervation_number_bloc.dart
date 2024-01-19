@@ -37,6 +37,7 @@ class RezervationNumberBloc
   Future<void> _getNumberEvent(RezervationGetNumberEvent event,
       Emitter<RezervationNumberState> emit) async {
     debugPrint(event.number);
+    emit(RezervationNumberLoadingState());
     final result = await _getNumberRezervationUseCase(
         GetNumberRezervationUseCaseParams(number: event.number));
 

@@ -137,44 +137,58 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                         child: CircularProgressIndicator(),
                       );
                     } else if (state is RepertoireLoadedState) {
-                      return ListView.separated(
-                          key: ValueKey(state.seances),
-                          padding: const EdgeInsets.only(bottom: 16),
-                          itemBuilder: (BuildContext context, int index) {
-                            SeanceInfoModel seanceInfoModel =
-                                state.seances[index];
-                            Color? backgroundColor;
-                            Color? textColor;
+                      if (state.seances.isNotEmpty) {
+                        return ListView.separated(
+                            key: ValueKey(state.seances),
+                            padding: const EdgeInsets.only(bottom: 16),
+                            itemBuilder: (BuildContext context, int index) {
+                              SeanceInfoModel seanceInfoModel =
+                                  state.seances[index];
+                              Color? backgroundColor;
+                              Color? textColor;
 
-                            if (seanceInfoModel.seanceStatus ==
-                                STATUS_STARTING_SOON) {
-                              backgroundColor =
-                                  const Color.fromARGB(255, 255, 230, 0);
-                            } else if (seanceInfoModel.seanceStatus ==
-                                STATUS_IN_PROGRESS) {
-                              backgroundColor =
-                                  const Color.fromARGB(255, 215, 215, 215);
-                              textColor =
-                                  const Color.fromARGB(255, 109, 109, 109);
-                            }
-                            return SeancesListTile(
-                              backgroundColor: backgroundColor,
-                              textColor: textColor,
-                              startTime: DateFormat('HH:mm')
-                                  .format(seanceInfoModel.startTime),
-                              movie: seanceInfoModel.movie,
-                              endTime: DateFormat('HH:mm')
-                                  .format(seanceInfoModel.endTime),
-                              hall: seanceInfoModel.hallName,
-                              isExistBuy: seanceInfoModel.isExistBuy,
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(
-                                color: Color.fromARGB(255, 194, 0, 0),
-                              ),
-                          itemCount: state.seances.length);
+                              if (seanceInfoModel.seanceStatus ==
+                                  STATUS_STARTING_SOON) {
+                                backgroundColor =
+                                    const Color.fromARGB(255, 255, 230, 0);
+                              } else if (seanceInfoModel.seanceStatus ==
+                                  STATUS_IN_PROGRESS) {
+                                backgroundColor =
+                                    const Color.fromARGB(255, 215, 215, 215);
+                                textColor =
+                                    const Color.fromARGB(255, 109, 109, 109);
+                              }
+                              return SeancesListTile(
+                                backgroundColor: backgroundColor,
+                                textColor: textColor,
+                                startTime: DateFormat('HH:mm')
+                                    .format(seanceInfoModel.startTime),
+                                movie: seanceInfoModel.movie,
+                                endTime: DateFormat('HH:mm')
+                                    .format(seanceInfoModel.endTime),
+                                hall: seanceInfoModel.hallName,
+                                isExistBuy: seanceInfoModel.isExistBuy,
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(
+                                      color: Color.fromARGB(255, 194, 0, 0),
+                                    ),
+                            itemCount: state.seances.length);
+                      } else {
+                        return const Center(
+                          child: Text(
+                            'Нет расписаний',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        );
+                      }
                     }
+
                     return const Center(
                       child: Text(
                         'Нет расписаний',

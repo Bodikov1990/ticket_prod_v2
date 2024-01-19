@@ -21,7 +21,7 @@ class MainQrGetRezervationSuccesState extends MainQrState {
   List<Object> get props => [ticket];
 }
 
-final class MainQrGetRezervationErrorState extends MainQrState {
+class MainQrGetRezervationErrorState extends MainQrState {
   final String message;
 
   MainQrGetRezervationErrorState({required this.message});

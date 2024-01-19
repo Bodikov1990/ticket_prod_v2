@@ -7,6 +7,8 @@ abstract class SeatListState {
 
 class SeatListInitial extends SeatListState {}
 
+class SeatListActivatingState extends SeatListState {}
+
 class SeatFilteredState extends SeatListState {
   final Map<String, List<SeatEntity>> allMapSeats;
   final Map<String, List<SeatEntity>> soldMapSeats;

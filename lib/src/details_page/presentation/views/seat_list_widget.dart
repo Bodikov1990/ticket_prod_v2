@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +31,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.seats == null || widget.seats!.isEmpty) {
+    if (widget.seats == null || (widget.seats?.isEmpty ?? true)) {
       return Container();
     }
 
@@ -40,11 +40,11 @@ class _SeatListWidgetState extends State<SeatListWidget> {
       bloc: widget.seatListBloc,
       listener: (context, state) {
         if (state is SeatActivateErrorState) {
-          _showAlert(
-              context: context, title: state.title, content: state.message);
+          // _showAlert(
+          //     context: context, title: state.title, content: state.message);
         } else if (state is SeatActivatedState) {
-          _showAlert(
-              context: context, title: state.title, content: state.message);
+          // _showAlert(
+          //     context: context, title: state.title, content: state.message);
         }
       },
       child: BlocBuilder<SeatListBloc, SeatListState>(
@@ -58,7 +58,10 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 4.0,
                 ),
                 Text(
-                    "Находятся в зале: ${state.activatedMapSeats.values.length}"),
+                  "Находятся в зале: ${state.activatedMapSeats.values.length}",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w400),
+                ),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -115,34 +118,25 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   ),
               ],
             );
+          } else if (state is SeatListActivatingState) {
+            return const Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Активация мест...',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  CircularProgressIndicator(),
+                ],
+              ),
+            );
           }
           return Container();
         },
       ),
     ));
-  }
-
-  _showAlert({required BuildContext context, String? title, String? content}) {
-    final content0 = content ?? '';
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: title != null
-            ? Text(title, style: const TextStyle(fontWeight: FontWeight.w600))
-            : null,
-        content: Text(content0),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              AutoRouter.of(context).pop();
-            },
-            child: const Text(
-              'Ок',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
