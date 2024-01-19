@@ -64,7 +64,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
             content: state.message,
             onOkPressed: () {
               widget.onTapOk(true);
-              AutoRouter.of(contextMain).popUntilRoot();
             },
           );
         }
