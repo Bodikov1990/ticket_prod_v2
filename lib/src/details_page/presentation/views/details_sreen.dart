@@ -46,6 +46,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   void _activateSeats() {
     if (id != null) {
+      GetIt.I<Talker>().debug('Tapped ACTIVATE button');
       _seatListBloc.add(SeatActivateEvent(ticketID: id ?? ''));
     }
   }
@@ -56,13 +57,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
       bloc: _detailsBloc,
       listener: (listenerContext, state) {
         if (state is DetailsTicketStatusError) {
+          GetIt.I<Talker>().debug('SEATS ALREADY ACTIVATED');
           _showAlert(
             contextMain: contextMain,
             title: state.title,
             content: state.message,
             onOkPressed: () {
               widget.onTapOk(true);
-              GetIt.I<Talker>().debug('Popping route DetailsTicketStatusError');
+              AutoRouter.of(contextMain).popUntilRoot();
             },
           );
         }
@@ -89,26 +91,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 bloc: _seatListBloc,
                 listener: (context, state) {
                   if (state is SeatActivateErrorState) {
+                    GetIt.I<Talker>().debug('Seats activated: ERROR');
                     _showAlert(
                       contextMain: contextMain,
                       title: state.title,
                       content: state.message,
                       onOkPressed: () {
                         widget.onTapOk(true);
-                        GetIt.I<Talker>()
-                            .debug('Popping route SeatActivateErrorState');
+
                         AutoRouter.of(contextMain).popUntilRoot();
                       },
                     );
                   } else if (state is SeatActivatedState) {
+                    GetIt.I<Talker>().debug('Seats activated: SUCCESS');
                     _showAlert(
                       contextMain: contextMain,
                       title: state.title,
                       content: state.message,
                       onOkPressed: () {
                         widget.onTapOk(true);
-                        GetIt.I<Talker>()
-                            .debug('Popping route SeatActivatedState');
+
                         AutoRouter.of(contextMain).popUntilRoot();
                       },
                     );
@@ -118,14 +120,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   backgroundColor: Colors.red,
                   onPressed: () {
                     if (widget.ticket.status == 3) {
+                      GetIt.I<Talker>().debug(
+                          'Ticket already activated, ticket status ${widget.ticket.status}');
                       widget.onTapOk(true);
                       contextMain.popRoute();
                     } else {
                       _activateSeats();
-                      // if (state is SeatActivatedState) {
-                      //   widget.onTapOk(true);
-                      //   context.popRoute();
-                      // }
                     }
                   },
                   child: const Text('OK'),

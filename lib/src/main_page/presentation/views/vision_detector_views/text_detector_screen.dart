@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/bloc/text_scanner_bloc.dart';
 
@@ -52,11 +54,10 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
         for (TextElement element in line.elements) {
-          // Получаем обработанный номер бронирования или null
           final String? reservationNumber = processString(element.text, prefix);
 
           if (reservationNumber != null) {
-            // Добавляем событие, только если номер бронирования не null и не был обработан ранее
+            GetIt.I<Talker>().debug(reservationNumber);
             _textScannerBloc
                 .add(TextScannerGetNumberEvent(number: reservationNumber));
           }
