@@ -23,7 +23,6 @@ class AuthenticationRemoteDataSourceImpl
     AuthenticationModel authModel =
         AuthenticationModel(login: login, password: password);
 
-    // Установка базового URL, если передан
     String url = baseURL ?? _dio.options.baseUrl;
     debugPrint("authenticate baseURL $url");
 
@@ -31,7 +30,6 @@ class AuthenticationRemoteDataSourceImpl
       Response response =
           await _dio.post('$url/api/auth/login', data: authModel.toJson());
 
-      // Проверка статуса ответа
       if (response.statusCode != 200) {
         throw APIExeption(
           message: response.statusMessage ?? "Exception from repo",
@@ -44,7 +42,6 @@ class AuthenticationRemoteDataSourceImpl
     } catch (e) {
       debugPrint("authenticate ${e.toString()}");
 
-      // Обработка ошибок DioException
       if (e is DioException) {
         debugPrint(
             "authenticate ${e.message} ${e.response?.statusMessage ?? ""}");
@@ -55,7 +52,6 @@ class AuthenticationRemoteDataSourceImpl
         throw APIExeption(message: message, statusCode: statusCode);
       }
 
-      // Перехват всех остальных исключений
       throw APIExeption(message: e.toString(), statusCode: 0);
     }
   }
