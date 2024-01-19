@@ -15,43 +15,48 @@ class AuthenticationRemoteDataSourceImpl
   final Dio _dio = GetIt.instance<Dio>();
 
   @override
-  Future<String?> authenticate(
-      {required String? login,
-      required String? password,
-      String? baseURL}) async {
+  Future<String?> authenticate({
+    required String? login,
+    required String? password,
+    String? baseURL,
+  }) async {
     AuthenticationModel authModel =
         AuthenticationModel(login: login, password: password);
 
-    String url = '';
-    if (baseURL == null) {
-      url = _dio.options.baseUrl;
-      debugPrint("authenticate baseURL null, url $url");
-    } else {
-      _dio.options.baseUrl = baseURL;
-    }
-
-    debugPrint("authenticate baseURL ${_dio.options.baseUrl}");
+    // Установка базового URL, если передан
+    String url = baseURL ?? _dio.options.baseUrl;
+    debugPrint("authenticate baseURL $url");
 
     try {
       Response response =
           await _dio.post('$url/api/auth/login', data: authModel.toJson());
 
+      // Проверка статуса ответа
       if (response.statusCode != 200) {
         throw APIExeption(
-            message: response.statusMessage ?? "Exception from repo",
-            statusCode: response.statusCode ?? 0);
+          message: response.statusMessage ?? "Exception from repo",
+          statusCode: response.statusCode ?? 0,
+        );
       }
+
       debugPrint(response.data["access_token"]);
       return response.data["access_token"];
-    } on APIExeption {
-      rethrow;
     } catch (e) {
-      debugPrint("authenticate ${e.toString()} ");
+      debugPrint("authenticate ${e.toString()}");
+
+      // Обработка ошибок DioException
       if (e is DioException) {
         debugPrint(
             "authenticate ${e.message} ${e.response?.statusMessage ?? ""}");
+        int statusCode = e.response?.statusCode ?? 0;
+        String message =
+            e.response?.statusMessage ?? e.message ?? '_empty.error.message';
+
+        throw APIExeption(message: message, statusCode: statusCode);
       }
-      throw APIExeption(message: e.toString(), statusCode: 507);
+
+      // Перехват всех остальных исключений
+      throw APIExeption(message: e.toString(), statusCode: 0);
     }
   }
 
@@ -73,9 +78,9 @@ class AuthenticationRemoteDataSourceImpl
 
         throw APIExeption(
             message: e.message ?? "Opps",
-            statusCode: e.response?.statusCode ?? 505);
+            statusCode: e.response?.statusCode ?? 0);
       }
-      throw APIExeption(message: e.toString(), statusCode: 505);
+      throw APIExeption(message: e.toString(), statusCode: 0);
     }
   }
 }

@@ -21,15 +21,15 @@ class CheckedPingSuccesState extends AuthenticationState {
 }
 
 class CheckedPingErrorState extends AuthenticationState {
+  final String title;
   final String message;
-  final int statusCode;
   const CheckedPingErrorState(
+    this.title,
     this.message,
-    this.statusCode,
   );
 
   @override
-  List<Object> get props => [message, statusCode];
+  List<Object> get props => [title, message];
 }
 
 class CheckAuthenticationState extends AuthenticationState {
@@ -55,15 +55,16 @@ class AuthenticatedState extends AuthenticationState {
 }
 
 class AuthenticationErrorState extends AuthenticationState {
+  final String title;
   final String message;
-  final int statusCode;
+
   const AuthenticationErrorState(
+    this.title,
     this.message,
-    this.statusCode,
   );
 
   @override
-  List<Object> get props => [message, statusCode];
+  List<Object> get props => [message, title];
 }
 
 class CheckedAuthenticationErrorState extends AuthenticationState {

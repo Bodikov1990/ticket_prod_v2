@@ -30,8 +30,7 @@ class AuthenticationBloc
 
     final result = await _getUserUseCase();
     result.fold(
-        (failure) =>
-            emit(AuthenticationErrorState(failure.message, failure.statusCode)),
+        (failure) => _showError(failure.statusCode, failure.message, emit),
         (user) => userModel = user);
 
     String? baseURL = userModel.baseURL;
@@ -41,8 +40,7 @@ class AuthenticationBloc
           await _checPingUseCase(CheckPingUseCaseParams(baseURL: baseURL));
 
       result.fold(
-          (failure) =>
-              emit(CheckedPingErrorState(failure.message, failure.statusCode)),
+          (failure) => _showError(failure.statusCode, failure.message, emit),
           (r) => emit(const CheckedPingSuccesState()));
     }
   }
@@ -65,13 +63,27 @@ class AuthenticationBloc
         login: event.login, password: event.password));
 
     result.fold(
-        (failure) =>
-            emit(AuthenticationErrorState(failure.message, failure.statusCode)),
+        (failure) => _showError(failure.statusCode, failure.message, emit),
         (token) => userModel.accessToken = token);
 
     await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
     if (userModel.accessToken != null) {
       emit(const AuthenticatedState());
+    }
+  }
+
+  void _showError(
+      int statusCode, String message, Emitter<AuthenticationState> emit) {
+    if (statusCode == 401) {
+      emit(const AuthenticationErrorState("Ошибка!", 'Неверный пароль'));
+    } else if (statusCode == 404) {
+      emit(const AuthenticationErrorState("Ошибка!", 'Неверный логин'));
+    } else if (message == 'The connection errored') {
+      emit(const AuthenticationErrorState("Нет связи с сервером!",
+          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
+    } else {
+      emit(const CheckedPingErrorState("Нет связи с сервером!",
+          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
     }
   }
 }

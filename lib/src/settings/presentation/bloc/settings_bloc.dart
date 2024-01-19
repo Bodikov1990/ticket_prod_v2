@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
 
 import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
@@ -19,8 +21,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(SettingsInitial()) {
     on<SettingsGetUserEvent>(_getUserHandler);
     on<SettingsSaveUserEvent>(_saveUserHandler);
-    on<SettingsSaveTokenEvent>(_saveTokenHandler);
     on<SettingsAuthenticateEvent>(_authenticateHandler);
+    on<SettingsSaveTokenEvent>(_saveTokenHandler);
   }
 
   Future<void> _getUserHandler(
@@ -63,10 +65,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         login: event.login, password: event.password, baseURL: event.baseURL));
     String? localToken = '';
     result.fold(
-        (failure) => emit(SettingsAuthenticateErrorState(
-            failure.message, failure.statusCode.toString())),
+        (failure) => _showError(failure.statusCode, failure.message, emit),
         (token) => localToken = token);
-    debugPrint("SettingsBloc $localToken ");
+    debugPrint("SettingsBloc Token $localToken ");
+    GetIt.I<Talker>().debug("SettingsBloc Token $localToken ");
     if (localToken != null && localToken != '') {
       emit(SettingsAuthenticatedState(localToken!));
     }
@@ -76,5 +78,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       SettingsSaveTokenEvent event, Emitter<SettingsState> emit) async {
     userModel.accessToken = event.token;
     await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
+  }
+
+  void _showError(int statusCode, String message, Emitter<SettingsState> emit) {
+    if (statusCode == 401) {
+      emit(const SettingsAuthenticateErrorState("Ошибка!", 'Неверный пароль'));
+    } else if (statusCode == 404) {
+      emit(const SettingsAuthenticateErrorState("Ошибка!", 'Неверный логин'));
+    } else if (statusCode == 0) {
+      emit(const SettingsAuthenticateErrorState("Нет связи с сервером!",
+          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
+    }
   }
 }

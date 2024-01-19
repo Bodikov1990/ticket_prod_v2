@@ -44,11 +44,11 @@ final class SettingsAuthenticatedState extends SettingsState {
 }
 
 final class SettingsAuthenticateErrorState extends SettingsState {
+  final String title;
   final String message;
-  final String statusCode;
 
-  const SettingsAuthenticateErrorState(this.message, this.statusCode);
+  const SettingsAuthenticateErrorState(this.title, this.message);
 
   @override
-  List<Object> get props => [statusCode];
+  List<Object> get props => [title, message];
 }

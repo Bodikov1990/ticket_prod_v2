@@ -42,13 +42,12 @@ class RezervationNumberBloc
         GetNumberRezervationUseCaseParams(number: event.number));
 
     result.fold(
-        (failure) => _showError(failure.message, failure.statusCode, emit),
+        (failure) => _showError(failure.statusCode, emit),
         (ticketEntity) =>
             emit(RezervationGetTicketSuccesState(ticketEntity: ticketEntity)));
   }
 
-  void _showError(
-      String message, int statusCode, Emitter<RezervationNumberState> emit) {
+  void _showError(int statusCode, Emitter<RezervationNumberState> emit) {
     if (statusCode == 404) {
       emit(const RezervationGetTicketErrorState(
           title: "Ошибка!",

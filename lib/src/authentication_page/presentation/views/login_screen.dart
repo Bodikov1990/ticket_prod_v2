@@ -44,11 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
           bloc: _authenticationBloc,
           listener: (context, state) {
             if (state is CheckedPingErrorState) {
-              _showAlert(
-                  title: "No connect", content: "Check connection with server");
+              _showAlert(title: state.title, content: state.message);
             } else if (state is AuthenticationErrorState) {
-              // _showAlert(
-              //     title: state.message, content: state.statusCode.toString());
+              _showAlert(title: state.title, content: state.message);
             }
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(

@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           } else if (state is SettingsGetUserErrorState) {
             _addressController.text = 'http://';
           } else if (state is SettingsAuthenticateErrorState) {
-            _showAlert(title: state.message, content: state.statusCode);
+            _showAlert(title: state.title, content: state.message);
           }
         },
         builder: (context, state) {
