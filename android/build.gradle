@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.10'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -15,16 +15,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-
-    configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.jetbrains.kotlin' && details.requested.name.startsWith("kotlin-stdlib")) {
-            details.useVersion '1.8.10' // Установите версию, которая вам нужна
-        }
-    }
-    }
-    
+    } 
 }
 
 rootProject.buildDir = '../build'
