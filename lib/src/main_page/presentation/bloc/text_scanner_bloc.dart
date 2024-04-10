@@ -23,8 +23,8 @@ class TextScannerBloc extends Bloc<TextScannerEvent, TextScannerState> {
     final result = await _getUserUseCase();
     result.fold(
         (failure) => emit(TextScannerLoadingErrorState(
-            title: 'Ошибка!',
-            message: 'Невозможно получить префикс кинотеатра!')),
+            title: 'Помилка!',
+            message: 'Неможливо отримати префікс кінотеатру!')),
         (user) => emit(TextScannerPrefixLoadedState(
             prefix: user.prefix ?? '_empty.prefix')));
   }
@@ -46,9 +46,9 @@ class TextScannerBloc extends Bloc<TextScannerEvent, TextScannerState> {
       String message, int statusCode, Emitter<TextScannerState> emit) {
     if (statusCode == 404) {
       emit(TextScannerLoadingErrorState(
-          title: "Ошибка!",
+          title: "Помилка!",
           message:
-              'Извините, бронь не найдена. Пожалуйста, проверьте введенный номер брони и попробуйте снова.'));
+              'Вибачте, бронювання не знайдено. Будь ласка, перевірте введений номер бронювання і спробуйте знову.'));
     }
   }
 }

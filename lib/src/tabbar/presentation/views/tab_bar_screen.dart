@@ -25,7 +25,7 @@ class TabBarPage extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: 'QR'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.dialpad), label: 'Номер брони'),
+                icon: Icon(Icons.dialpad), label: 'Номер бронювання'),
             BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Репертуар'),
           ],
         );

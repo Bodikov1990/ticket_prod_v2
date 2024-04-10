@@ -58,7 +58,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 4.0,
                 ),
                 Text(
-                  "Находятся в зале: ${state.activatedMapSeats.values.length}",
+                  "Знаходяться в залі: ${state.activatedMapSeats.values.length}",
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w400),
                 ),
@@ -66,7 +66,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 8.0,
                 ),
                 const Text(
-                  "Билеты",
+                  "Квитки",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4.0),
@@ -112,7 +112,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                          'Количество билетов: ${state.allMapSeats[entry.key]?.length}'),
+                          'Кількість квитків: ${state.allMapSeats[entry.key]?.length}'),
                       const SizedBox(height: 8.0),
                     ],
                   ),
@@ -123,7 +123,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
               child: Column(
                 children: [
                   Text(
-                    'Активация мест...',
+                    'Активація місць...',
                     style: TextStyle(fontWeight: FontWeight.w900),
                   ),
                   SizedBox(

@@ -75,7 +75,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       },
       builder: (context, state) {
         return CameraView(
-          title: 'Barcode Scanner',
+          title: 'QR Code Scanner',
           customPaint: _customPaint,
           text: _text,
           onImage: (inputImage) {

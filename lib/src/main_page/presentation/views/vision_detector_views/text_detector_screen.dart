@@ -98,8 +98,9 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
               state.ticketEntity.status == 4 ||
               state.ticketEntity.status == 5) {
             _showAlert(
-                title: 'Ошибка',
-                content: 'Билет отправлен на возврат. Спасибо за обращение!');
+                title: 'Помилка',
+                content:
+                    'Квиток відправлено на повернення. Дякуємо за звернення!');
           } else {
             AutoRouter.of(context).push(DetailsRoute(
                 ticket: state.ticketEntity,
@@ -139,7 +140,6 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              // Navigator.pop(context);
               AutoRouter.of(context).popUntilRoot();
             },
             child: const Text(

@@ -25,7 +25,7 @@ class RepertoireScreen extends StatefulWidget {
 
 class _RepertoireScreenState extends State<RepertoireScreen> {
   final _repertoireBloc = RepertoireBloc();
-  String selectedDay = 'Сегодня';
+  String selectedDay = 'Сьогодні';
 
   @override
   void initState() {
@@ -96,11 +96,11 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                       height: 44,
                       child: CupertinoSlidingSegmentedControl<String>(
                         children: const {
-                          'Сегодня': SizedBox(
+                          'Сьогодні': SizedBox(
                               height: 40,
                               child: Center(
                                   child: Text(
-                                'Сегодня',
+                                'Сьогодні',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800, fontSize: 18),
                               ))),
@@ -179,7 +179,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                       } else {
                         return const Center(
                           child: Text(
-                            'Нет расписаний',
+                            'Немає розкладів',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.grey,
@@ -191,7 +191,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
 
                     return const Center(
                       child: Text(
-                        'Нет расписаний',
+                        'Немає розкладів',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey,

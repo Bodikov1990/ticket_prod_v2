@@ -113,15 +113,15 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     result.fold(
         (failure) => statusCode = failure.statusCode,
         (r) => emit(SeatActivatedState(
-            title: "Успешно!",
-            message: "Поздравляем! Ваша бронь успешно активирована. ")));
+            title: "Успішно!",
+            message: "Вітаємо! Ваше бронювання успішно активовано.")));
 
     debugPrint("--- Activating status code: $statusCode");
     if (statusCode == 410) {
       emit(SeatActivateErrorState(
-          title: "Ошибка",
+          title: "Помилка",
           message:
-              "Извините, время активации доступно за 30 минут до начала сеанса. Пожалуйста, попробуйте позже."));
+              "Вибачте, час активації доступний за 30 хвилин до початку сеансу. Будь ласка, спробуйте пізніше."));
     }
   }
 }

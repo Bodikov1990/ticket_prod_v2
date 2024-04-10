@@ -27,7 +27,7 @@ class MainQrBloc extends Bloc<MainQrEvent, MainQrState> {
         ticketEntity?.status == 4 ||
         ticketEntity?.status == 5) {
       emit(MainQrGetRezervationErrorState(
-          message: "Билет отправлен на возврат. Спасибо за обращение!"));
+          message: "Квиток відправлено на повернення. Дякуємо за звернення!"));
     } else {
       if (ticketEntity != null) {
         emit(MainQrGetRezervationSuccesState(

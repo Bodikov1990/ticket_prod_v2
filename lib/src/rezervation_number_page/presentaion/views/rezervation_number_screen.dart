@@ -64,7 +64,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
               });
             },
             child: const Text(
-              'Номер брони',
+              'Номер бронювання',
               style: TextStyle(color: Colors.white),
             )),
         centerTitle: true,
@@ -85,8 +85,9 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                 state.ticketEntity.status == 4 ||
                 state.ticketEntity.status == 5) {
               _showAlert(
-                  title: 'Ошибка',
-                  content: 'Билет отправлен на возврат. Спасибо за обращение!');
+                  title: 'Помилка',
+                  content:
+                      'Квиток відправлено на повернення. Дякуємо за звернення!');
             } else {
               AutoRouter.of(context).push(DetailsRoute(
                   ticket: state.ticketEntity,
@@ -120,7 +121,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       decoration: const InputDecoration(
-                          labelText: "Введите номер брони",
+                          labelText: "Введіть номер бронювання",
                           border: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0)),
@@ -144,7 +145,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                           disabledBackgroundColor:
                               const Color.fromARGB(255, 253, 1, 1)
                                   .withOpacity(0.12)),
-                      child: const Text("Проверить бронь"),
+                      child: const Text("Перевірити бронювання"),
                     )
                   ],
                 ),

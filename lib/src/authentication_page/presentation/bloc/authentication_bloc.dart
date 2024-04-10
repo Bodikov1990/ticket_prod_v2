@@ -75,15 +75,15 @@ class AuthenticationBloc
   void _showError(
       int statusCode, String message, Emitter<AuthenticationState> emit) {
     if (statusCode == 401) {
-      emit(const AuthenticationErrorState("Ошибка!", 'Неверный пароль'));
+      emit(const AuthenticationErrorState("Помилка!", 'Неправильний пароль'));
     } else if (statusCode == 404) {
-      emit(const AuthenticationErrorState("Ошибка!", 'Неверный логин'));
+      emit(const AuthenticationErrorState("Помилка!", 'Неправильний логін.'));
     } else if (message == 'The connection errored') {
-      emit(const AuthenticationErrorState("Нет связи с сервером!",
-          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
+      emit(const AuthenticationErrorState("Відсутність з'єднання з сервером!",
+          'Будь ласка, перевірте, чи правильно ви ввели адресу сервера!'));
     } else {
-      emit(const CheckedPingErrorState("Нет связи с сервером!",
-          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
+      emit(const CheckedPingErrorState("Відсутність з'єднання з сервером!",
+          'Будь ласка, перевірте, чи правильно ви ввели адресу сервера!'));
     }
   }
 }

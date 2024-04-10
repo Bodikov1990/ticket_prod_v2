@@ -28,8 +28,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
     if (_ticketEntity.status == 3) {
       emit(const DetailsTicketStatusError(
-          title: "Активирован", message: "Все билеты уже активированы!"));
-      ticketStatus = 'Билеты уже активированы! ❗';
+          title: "Активовано", message: "Всі квитки вже активовано!"));
+      ticketStatus = 'Квитки вже активовані! ❗';
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
       startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
@@ -41,7 +41,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           startTime: startTime,
           seats: seats));
     } else if (_ticketEntity.status == 2) {
-      ticketStatus = 'Новый ✅';
+      ticketStatus = 'Новий ✅';
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
       startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
@@ -90,7 +90,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     List<String> seatStrings = [];
     seatRows.forEach((row, seats) {
       String seatList = seats.join(', ');
-      seatStrings.add('Ряд: $row Места: $seatList');
+      seatStrings.add('Ряд: $row Місця: $seatList');
     });
 
     return seatStrings.join('\n');

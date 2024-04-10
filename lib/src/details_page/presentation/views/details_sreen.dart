@@ -82,7 +82,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
           return Scaffold(
               appBar: AppBar(
-                title: const Text("Детали билета"),
+                title: const Text("Деталі квитка"),
               ),
               backgroundColor: backgroundColor,
               body: _buildBodyBasedOnState(state),
@@ -149,7 +149,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       );
     } else {
       return const Center(
-        child: Text('Загрузка данных или сообщение об ошибке'),
+        child: Text('Помилка в завантаженні даних'),
       );
     }
   }
@@ -189,7 +189,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: 'Фильм',
+            label: 'Фільм',
             value: movieName,
           )),
       const SizedBox(
@@ -207,13 +207,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: 'Начало сеанса',
+            label: 'Початок сеансу',
             value: startTime,
           )),
       const SizedBox(
         height: 10,
       ),
-      borderBuild(ticketStatus, TicketInfoWidget(label: 'Места', value: seats)),
+      borderBuild(ticketStatus, TicketInfoWidget(label: 'Місця', value: seats)),
       Container(
           width: MediaQuery.of(context).size.width - 16,
           padding: const EdgeInsets.symmetric(horizontal: 16),

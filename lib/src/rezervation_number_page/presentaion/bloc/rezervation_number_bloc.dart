@@ -50,9 +50,9 @@ class RezervationNumberBloc
   void _showError(int statusCode, Emitter<RezervationNumberState> emit) {
     if (statusCode == 404) {
       emit(const RezervationGetTicketErrorState(
-          title: "Ошибка!",
+          title: "Помилка!",
           message:
-              'Извините, бронь не найдена. Пожалуйста, проверьте введенный номер брони и попробуйте снова.'));
+              'Вибачте, бронювання не знайдено. Будь ласка, перевірте введений номер бронювання і спробуйте знову.'));
     }
   }
 }
