@@ -82,7 +82,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
           return Scaffold(
               appBar: AppBar(
-                title: const Text("Детали билета"),
+                title: const Text(
+                  "Детали билета",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               backgroundColor: backgroundColor,
               body: _buildBodyBasedOnState(state),

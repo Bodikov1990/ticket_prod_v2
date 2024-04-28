@@ -11,6 +11,7 @@ class UserModel {
   String? baseURL;
   String? prefix;
   String? accessToken;
+  String? expiredAt;
 
   UserModel();
 

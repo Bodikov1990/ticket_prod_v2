@@ -16,11 +16,13 @@ class CheckAuthenticationEvent extends AuthenticationEvent {
 class AuthenticateEvent extends AuthenticationEvent {
   final String login;
   final String password;
+  final String expiredAt;
 
-  const AuthenticateEvent({required this.login, required this.password});
+  const AuthenticateEvent(
+      {required this.login, required this.password, required this.expiredAt});
 
   @override
-  List<Object> get props => [login, password];
+  List<Object> get props => [login, password, expiredAt];
 }
 
 class SaveAuthenticationDataEvent extends AuthenticationEvent {

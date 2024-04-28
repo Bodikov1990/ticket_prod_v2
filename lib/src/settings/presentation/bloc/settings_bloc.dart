@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
@@ -47,9 +46,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     userModel.login = event.login;
     userModel.password = event.password;
 
-    final result =
-        await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-    result.fold((failure) => null, (r) => null);
+    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
+
     String? login = userModel.login;
     String? password = userModel.password;
     String? baseURL = userModel.baseURL;
@@ -63,15 +61,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       SettingsAuthenticateEvent event, Emitter<SettingsState> emit) async {
     final result = await _authenticateUseCase(AuthenticateUseCaseParams(
         login: event.login, password: event.password, baseURL: event.baseURL));
-    String? localToken = '';
+
     result.fold(
         (failure) => _showError(failure.statusCode, failure.message, emit),
-        (token) => localToken = token);
-    debugPrint("SettingsBloc Token $localToken ");
-    GetIt.I<Talker>().debug("SettingsBloc Token $localToken ");
-    if (localToken != null && localToken != '') {
-      emit(SettingsAuthenticatedState(localToken!));
+        (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
+
+    GetIt.I<Talker>().debug("SettingsBloc Token ${userModel.accessToken} ");
+    if (userModel.accessToken != null && userModel.accessToken != '') {
+      emit(SettingsAuthenticatedState(userModel.accessToken!));
     }
+  }
+
+  Future<void> _saveUser(String? accessToken, String? expiredAt) async {
+    userModel.accessToken = accessToken;
+    userModel.expiredAt = expiredAt;
+    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
   }
 
   Future<void> _saveTokenHandler(

@@ -1,15 +1,16 @@
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/usecase/usecase.dart';
 import 'package:ticket_prod_v2/core/utils/typedef.dart';
+import 'package:ticket_prod_v2/src/authentication_page/data/models/auth_data_model.dart';
 import 'package:ticket_prod_v2/src/authentication_page/repository/authentication_repository/authentication_repository.dart';
 
 class AuthenticateUseCase
-    extends UsecaseWithParams<String?, AuthenticateUseCaseParams> {
+    extends UsecaseWithParams<AuthDataModel?, AuthenticateUseCaseParams> {
   final AuthenticationRepository _repository =
       GetIt.instance<AuthenticationRepository>();
 
   @override
-  ResultFuture<String?> call(AuthenticateUseCaseParams params) async =>
+  ResultFuture<AuthDataModel?> call(AuthenticateUseCaseParams params) async =>
       _repository.authenticate(params.login, params.password, params.baseURL);
 }
 

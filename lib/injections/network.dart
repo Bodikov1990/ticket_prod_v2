@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-
 import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
 
 const TIMEOUT = 60000;

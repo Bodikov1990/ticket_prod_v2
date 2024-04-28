@@ -54,7 +54,33 @@ class AuthenticationBloc
     user.fold(
         (failure) => emit(
             const CheckedAuthenticationErrorState(login: "", password: "")),
-        (userModel) => emit(CheckedAuthenticationState(userModel)));
+        (userModel) => _checkedAuth(userModel, emit));
+  }
+
+  Future<void> _checkedAuth(
+      UserModel userModel, Emitter<AuthenticationState> emit) async {
+    DateTime expiredAtFromSource = DateTime.now();
+
+    try {
+      if (userModel.expiredAt == null) {
+        expiredAtFromSource = DateTime.fromMicrosecondsSinceEpoch(0);
+      } else {
+        expiredAtFromSource =
+            DateTime.parse(userModel.expiredAt?.substring(0, 19) ?? '');
+      }
+    } catch (ignored) {
+      expiredAtFromSource = DateTime.fromMicrosecondsSinceEpoch(0);
+    }
+
+    if (expiredAtFromSource.isBefore(DateTime.now())) {
+      final result = await _authenticateUseCase(AuthenticateUseCaseParams(
+          login: userModel.login, password: userModel.password));
+      result.fold((l) => null,
+          (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
+      emit(CheckedAuthenticationState(this.userModel));
+    } else {
+      emit(CheckedAuthenticationState(userModel));
+    }
   }
 
   Future<void> _authenticateHandler(
@@ -64,12 +90,17 @@ class AuthenticationBloc
 
     result.fold(
         (failure) => _showError(failure.statusCode, failure.message, emit),
-        (token) => userModel.accessToken = token);
+        (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
 
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
     if (userModel.accessToken != null) {
       emit(const AuthenticatedState());
     }
+  }
+
+  Future<void> _saveUser(String? accessToken, String? expiredAt) async {
+    userModel.accessToken = accessToken;
+    userModel.expiredAt = expiredAt;
+    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
   }
 
   void _showError(

@@ -7,7 +7,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/bloc/main_qr_bloc.dart';
 
-import 'camera_view.dart';
+import 'detector_view.dart';
 
 @RoutePage()
 class QRScannerScreen extends StatefulWidget {
@@ -74,7 +74,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         }
       },
       builder: (context, state) {
-        return CameraView(
+        return DetectorView(
           title: 'Barcode Scanner',
           customPaint: _customPaint,
           text: _text,

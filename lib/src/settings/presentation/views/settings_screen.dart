@@ -59,7 +59,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: BlocConsumer<SettingsBloc, SettingsState>(
         bloc: _settingsBloc,

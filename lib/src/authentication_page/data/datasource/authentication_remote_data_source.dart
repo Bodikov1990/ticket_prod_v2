@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
+import 'package:ticket_prod_v2/src/authentication_page/data/models/auth_data_model.dart';
 import 'package:ticket_prod_v2/src/authentication_page/data/models/authentication_model.dart';
 
 abstract class AuthenticationRemoteDataSource {
   Future<void> checkPing(String baseURL);
-  Future<String?> authenticate(
+  Future<AuthDataModel?> authenticate(
       {required String? login, required String? password, String? baseURL});
 }
 
@@ -15,7 +16,7 @@ class AuthenticationRemoteDataSourceImpl
   final Dio _dio = GetIt.instance<Dio>();
 
   @override
-  Future<String?> authenticate({
+  Future<AuthDataModel?> authenticate({
     required String? login,
     required String? password,
     String? baseURL,
@@ -38,7 +39,7 @@ class AuthenticationRemoteDataSourceImpl
       }
 
       debugPrint(response.data["access_token"]);
-      return response.data["access_token"];
+      return AuthDataModel.fromJson(response.data);
     } catch (e) {
       debugPrint("authenticate ${e.toString()}");
 

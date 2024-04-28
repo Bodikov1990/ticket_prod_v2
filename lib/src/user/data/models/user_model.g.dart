@@ -11,7 +11,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel()
   ..password = json['password'] as String?
   ..baseURL = json['baseURL'] as String?
   ..prefix = json['prefix'] as String?
-  ..accessToken = json['accessToken'] as String?;
+  ..accessToken = json['accessToken'] as String?
+  ..expiredAt = json['expiredAt'] as String?;
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'login': instance.login,
@@ -19,4 +20,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'baseURL': instance.baseURL,
       'prefix': instance.prefix,
       'accessToken': instance.accessToken,
+      'expiredAt': instance.expiredAt,
     };

@@ -6,8 +6,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/bloc/text_scanner_bloc.dart';
-
-import 'camera_view.dart';
+import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/detector_view.dart';
 
 @RoutePage()
 class TextRecognizerScreen extends StatefulWidget {
@@ -113,7 +112,7 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
       },
       builder: (context, state) {
         if (state is TextScannerPrefixLoadedState) {
-          return CameraView(
+          return DetectorView(
             title: 'Text Detector',
             customPaint: _customPaint,
             text: _text,
@@ -139,7 +138,6 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              // Navigator.pop(context);
               AutoRouter.of(context).popUntilRoot();
             },
             child: const Text(

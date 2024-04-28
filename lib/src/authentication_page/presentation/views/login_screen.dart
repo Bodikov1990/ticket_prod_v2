@@ -62,9 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
               } else if (state is CheckedAuthenticationState) {
                 String? login = state.user.login;
                 String? password = state.user.password;
-                if (login != null && password != null) {
-                  _authenticationBloc
-                      .add(AuthenticateEvent(login: login, password: password));
+                String? expiredAt = state.user.expiredAt;
+                if (login != null && password != null && expiredAt != null) {
+                  _authenticationBloc.add(AuthenticateEvent(
+                      login: login, password: password, expiredAt: expiredAt));
                 }
               } else if (state is AuthenticatedState) {
                 AutoRouter.of(context).replace(const TabBarRoute());
