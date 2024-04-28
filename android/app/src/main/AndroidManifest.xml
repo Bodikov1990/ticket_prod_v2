@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Ticket Prod V2"
+        android:label="Tessera Tickets"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icons"
-        android:roundIcon="@mipmap/launcher_icons_round">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
         <activity
             android:name=".MainActivity"
             android:exported="true"

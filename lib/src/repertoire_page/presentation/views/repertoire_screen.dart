@@ -173,7 +173,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                             separatorBuilder:
                                 (BuildContext context, int index) =>
                                     const Divider(
-                                      color: Color.fromARGB(255, 194, 0, 0),
+                                      color: Color.fromARGB(255, 31, 44, 67),
                                     ),
                             itemCount: state.seances.length);
                       } else {

@@ -37,7 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 });
               },
-              child: const Text('Tessera')),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100),
+                child: Image.asset('assets/images/logo_tessera_white.png'),
+              )),
           centerTitle: true,
         ),
         body: BlocListener<AuthenticationBloc, AuthenticationState>(

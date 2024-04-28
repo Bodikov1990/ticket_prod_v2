@@ -72,11 +72,7 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('QR Scanner'),
-        ),
-        body: _liveFeedBody());
+    return Scaffold(appBar: AppBar(), body: _liveFeedBody());
   }
 
   Widget _liveFeedBody() {

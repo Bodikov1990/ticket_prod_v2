@@ -116,7 +116,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   }
                 },
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: const Color.fromARGB(255, 31, 44, 67),
                   onPressed: () {
                     if (widget.ticket.status == 3) {
                       GetIt.I<Talker>().debug(

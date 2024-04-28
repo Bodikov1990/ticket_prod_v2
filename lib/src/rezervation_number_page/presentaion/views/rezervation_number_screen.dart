@@ -139,10 +139,10 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                           : null,
                       style: ElevatedButton.styleFrom(
                           disabledForegroundColor:
-                              const Color.fromARGB(255, 253, 1, 1)
+                              const Color.fromARGB(255, 31, 44, 67)
                                   .withOpacity(0.38),
                           disabledBackgroundColor:
-                              const Color.fromARGB(255, 253, 1, 1)
+                              const Color.fromARGB(255, 31, 44, 67)
                                   .withOpacity(0.12)),
                       child: const Text("Проверить бронь"),
                     )
@@ -150,7 +150,8 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                 ),
               )),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 31, 44, 67),
                 onPressed: () {
                   AutoRouter.of(context).push(const TextRecognizerRoute());
                 },

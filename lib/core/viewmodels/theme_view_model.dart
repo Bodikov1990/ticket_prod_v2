@@ -7,8 +7,8 @@ class ThemeViewModel extends BaseViewModel {
   Image get appBarLogo {
     return Image.asset(
       dark
-          ? 'assets/images/app_bar_logo_dark.png'
-          : 'assets/images/app_bar_logo_light.png',
+          ? 'assets/images/logo_tessera_dark.png'
+          : 'assets/images/logo_tessera_white.png',
       height: 35,
     );
   }
@@ -20,7 +20,7 @@ class ThemeViewModel extends BaseViewModel {
   }
 
   Color get textColor {
-    return dark ? Colors.white : Colors.black;
+    return dark ? Colors.white : Colors.white;
   }
 
   Color get textColorSoft {
@@ -32,7 +32,7 @@ class ThemeViewModel extends BaseViewModel {
   }
 
   Color get canvasColor {
-    return dark ? const Color(0xFF191B27) : Colors.white;
+    return dark ? const Color(0xFF1F2C43) : Colors.white;
   }
 
   Color get grayColor {
@@ -46,7 +46,7 @@ class ThemeViewModel extends BaseViewModel {
   }
 
   Color get accentColor {
-    return dark ? mainRed : mainRed;
+    return dark ? mainBlue : mainBlue;
   }
 
   Brightness get brightness {
@@ -55,7 +55,7 @@ class ThemeViewModel extends BaseViewModel {
 
   AppBarTheme get appBarTheme {
     return AppBarTheme(
-      backgroundColor: mainRed,
+      backgroundColor: mainBlue,
       iconTheme: IconThemeData(color: textColor),
       elevation: 0,
       toolbarTextStyle: TextTheme(
@@ -122,6 +122,19 @@ class ThemeViewModel extends BaseViewModel {
   });
 
   MaterialColor mainRed = const MaterialColor(0xFFB71C1C, {
+    50: Color.fromRGBO(255, 235, 238, .1),
+    100: Color.fromRGBO(255, 205, 210, .2),
+    200: Color.fromRGBO(239, 154, 154, .3),
+    300: Color.fromRGBO(229, 115, 115, .4),
+    400: Color.fromRGBO(239, 83, 80, .5),
+    500: Color.fromRGBO(244, 67, 54, .6),
+    600: Color.fromRGBO(229, 57, 53, .7),
+    700: Color.fromRGBO(211, 47, 47, .8),
+    800: Color.fromRGBO(198, 40, 40, .9),
+    900: Color.fromRGBO(183, 28, 28, 1),
+  });
+
+  MaterialColor mainBlue = const MaterialColor(0xFF1F2C43, {
     50: Color.fromRGBO(255, 235, 238, .1),
     100: Color.fromRGBO(255, 205, 210, .2),
     200: Color.fromRGBO(239, 154, 154, .3),

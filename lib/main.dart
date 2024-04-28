@@ -54,7 +54,6 @@ class _ScannerAppState extends State<ScannerApp> {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       return MaterialApp.router(
-        title: 'Tessera',
         supportedLocales: supportedLocales,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
@@ -68,9 +67,9 @@ class _ScannerAppState extends State<ScannerApp> {
         locale: const Locale('ru', ''),
         theme: ThemeData(
           fontFamily: "Open Sans",
-          primaryColor: ThemeViewModel().mainRed,
+          primaryColor: ThemeViewModel().mainBlue,
           canvasColor: ThemeViewModel().canvasColor,
-          primarySwatch: ThemeViewModel().mainRed,
+          primarySwatch: ThemeViewModel().mainBlue,
           appBarTheme: ThemeViewModel().appBarTheme,
           textTheme: ThemeViewModel().textTheme,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
