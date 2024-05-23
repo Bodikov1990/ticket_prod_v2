@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/presentaion/bloc/rezervation_number_bloc.dart';
 
@@ -119,9 +120,9 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                       controller: _reservationNumber,
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                          labelText: "Введите номер брони",
-                          border: OutlineInputBorder(
+                      decoration: InputDecoration(
+                          labelText: S.current.enter_rezervation_number,
+                          border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0)),
                           )),

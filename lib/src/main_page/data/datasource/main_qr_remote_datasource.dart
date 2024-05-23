@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
 import 'package:ticket_prod_v2/src/main_page/data/models/ticket_model.dart';
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class MainQRRemoteDataSource {
   Future<TicketModel> getRezervation(String id);
@@ -11,10 +12,16 @@ abstract class MainQRRemoteDataSource {
 
 class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
   final Dio _dio = GetIt.instance<Dio>();
+  final SettingsRepository _repository = SettingsRepository();
 
   @override
   Future<TicketModel> getRezervation(String id) async {
-    _dio.options.headers['User-Agent'] = 'ios';
+    final settings = await _repository.getSettings();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${settings.accessToken}',
+      'User-Agent': 'ios'
+    };
+    _dio.options.headers = headers;
     try {
       Response response = await _dio.get(
         '/api/ticket/$id',

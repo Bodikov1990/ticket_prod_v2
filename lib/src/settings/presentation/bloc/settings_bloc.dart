@@ -1,97 +1,65 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
-import 'package:talker_flutter/talker_flutter.dart';
-import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
 
-import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/save_user_usecase.dart';
+import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
+import 'package:ticket_prod_v2/src/settings/data/models/settings_model.dart';
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final GetUserUseCase _getUserUseCase = GetUserUseCase();
-  final SaveUserUseCase _saveUserUseCase = SaveUserUseCase();
+  final SettingsRepository _settingsRepository = SettingsRepository();
   final AuthenticateUseCase _authenticateUseCase = AuthenticateUseCase();
-  UserModel userModel = UserModel();
 
   SettingsBloc() : super(SettingsInitial()) {
     on<SettingsGetUserEvent>(_getUserHandler);
     on<SettingsSaveUserEvent>(_saveUserHandler);
-    on<SettingsAuthenticateEvent>(_authenticateHandler);
     on<SettingsSaveTokenEvent>(_saveTokenHandler);
   }
 
   Future<void> _getUserHandler(
       SettingsGetUserEvent event, Emitter<SettingsState> emit) async {
     emit(SettingsGettingUserState());
+    final settings = await _settingsRepository.getSettings();
 
-    final result = await _getUserUseCase();
-
-    result.fold((failure) => null, (user) => userModel = user);
-    String? baseURL = userModel.baseURL;
+    final String? baseURL = settings.ipAddress;
     if (baseURL != null && baseURL != '') {
-      emit(SettingsGetUserSuccessState(userModel));
+      emit(SettingsGetUserSuccessState(settings));
     } else {
-      emit(SettingsGetUserErrorState());
+      emit(SettingsGetErrorState());
     }
   }
 
   Future<void> _saveUserHandler(
       SettingsSaveUserEvent event, Emitter<SettingsState> emit) async {
-    userModel.baseURL = event.baseURL;
-    userModel.prefix = event.prefix;
-    userModel.login = event.login;
-    userModel.password = event.password;
-
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-
-    String? login = userModel.login;
-    String? password = userModel.password;
-    String? baseURL = userModel.baseURL;
-    if (login != null && password != null && baseURL != null) {
-      emit(SettingsSavedUserState(
-          login: login, password: password, baseURL: baseURL));
-    }
-  }
-
-  _authenticateHandler(
-      SettingsAuthenticateEvent event, Emitter<SettingsState> emit) async {
     final result = await _authenticateUseCase(AuthenticateUseCaseParams(
         login: event.login, password: event.password, baseURL: event.baseURL));
 
     result.fold(
-        (failure) => _showError(failure.statusCode, failure.message, emit),
-        (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
-
-    GetIt.I<Talker>().debug("SettingsBloc Token ${userModel.accessToken} ");
-    if (userModel.accessToken != null && userModel.accessToken != '') {
-      emit(SettingsAuthenticatedState(userModel.accessToken!));
-    }
-  }
-
-  Future<void> _saveUser(String? accessToken, String? expiredAt) async {
-    userModel.accessToken = accessToken;
-    userModel.expiredAt = expiredAt;
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
+        (failure) =>
+            emit(SettingsAuthErrorState(failure.statusCode, failure.message)),
+        (authData) => emit(SettingsAuthenticatedState(
+              login: event.login,
+              password: event.password,
+              baseURL: event.baseURL,
+              prefix: event.prefix,
+              token: authData?.accessToken,
+              expiredAt: authData?.expiredAt,
+            )));
   }
 
   Future<void> _saveTokenHandler(
       SettingsSaveTokenEvent event, Emitter<SettingsState> emit) async {
-    userModel.accessToken = event.token;
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-  }
+    final settings = await _settingsRepository.getSettings();
 
-  void _showError(int statusCode, String message, Emitter<SettingsState> emit) {
-    if (statusCode == 401) {
-      emit(const SettingsAuthenticateErrorState("Ошибка!", 'Неверный пароль'));
-    } else if (statusCode == 404) {
-      emit(const SettingsAuthenticateErrorState("Ошибка!", 'Неверный логин'));
-    } else if (statusCode == 0) {
-      emit(const SettingsAuthenticateErrorState("Нет связи с сервером!",
-          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
-    }
+    settings.ipAddress = event.baseURL;
+    settings.prefix = event.prefix;
+    settings.login = event.login;
+    settings.password = event.password;
+    settings.accessToken = event.token;
+    settings.expiredAt = event.expiredAt;
+    await _settingsRepository.saveSettings(settings);
+    emit(SettingsSavedState());
   }
 }

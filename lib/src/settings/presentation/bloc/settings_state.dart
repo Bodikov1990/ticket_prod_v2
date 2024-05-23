@@ -4,51 +4,53 @@ abstract class SettingsState extends Equatable {
   const SettingsState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class SettingsInitial extends SettingsState {}
 
 final class SettingsGettingUserState extends SettingsState {}
 
-final class SettingsGetUserSuccessState extends SettingsState {
-  final UserModel userModel;
+final class SettingsGetErrorState extends SettingsState {}
 
-  const SettingsGetUserSuccessState(this.userModel);
+final class SettingsGetUserSuccessState extends SettingsState {
+  final SettingsModel settings;
+
+  const SettingsGetUserSuccessState(this.settings);
 
   @override
-  List<Object> get props => [userModel];
+  List<Object?> get props => [settings];
 }
 
-final class SettingsSavedUserState extends SettingsState {
+final class SettingsSavedState extends SettingsState {}
+
+final class SettingsAuthenticatedState extends SettingsState {
   final String login;
   final String password;
   final String baseURL;
+  final String prefix;
+  final String? token;
+  final String? expiredAt;
 
-  const SettingsSavedUserState(
-      {required this.login, required this.password, required this.baseURL});
-
-  @override
-  List<Object> get props => [login, password, baseURL];
-}
-
-final class SettingsGetUserErrorState extends SettingsState {}
-
-final class SettingsAuthenticatedState extends SettingsState {
-  final String token;
-
-  const SettingsAuthenticatedState(this.token);
+  const SettingsAuthenticatedState(
+      {required this.login,
+      required this.password,
+      required this.baseURL,
+      required this.prefix,
+      required this.token,
+      required this.expiredAt});
 
   @override
-  List<Object> get props => [token];
+  List<Object?> get props =>
+      [login, password, baseURL, prefix, token, expiredAt];
 }
 
-final class SettingsAuthenticateErrorState extends SettingsState {
-  final String title;
+final class SettingsAuthErrorState extends SettingsState {
+  final int stausCode;
   final String message;
 
-  const SettingsAuthenticateErrorState(this.title, this.message);
+  const SettingsAuthErrorState(this.stausCode, this.message);
 
   @override
-  List<Object> get props => [title, message];
+  List<Object> get props => [stausCode, message];
 }

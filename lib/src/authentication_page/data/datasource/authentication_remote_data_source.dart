@@ -28,8 +28,10 @@ class AuthenticationRemoteDataSourceImpl
     debugPrint("authenticate baseURL $url");
 
     try {
-      Response response =
-          await _dio.post('$url/api/auth/login', data: authModel.toJson());
+      Response response = await _dio.post(
+        '$url/api/auth/login',
+        data: authModel.toJson(),
+      );
 
       if (response.statusCode != 200) {
         throw APIExeption(
@@ -38,7 +40,6 @@ class AuthenticationRemoteDataSourceImpl
         );
       }
 
-      debugPrint(response.data["access_token"]);
       return AuthDataModel.fromJson(response.data);
     } catch (e) {
       debugPrint("authenticate ${e.toString()}");

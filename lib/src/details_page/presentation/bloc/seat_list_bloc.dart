@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/details_page/domain/entities/activate_entity.dart';
 import 'package:ticket_prod_v2/src/details_page/domain/usecases/activate_usecase.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
@@ -97,7 +98,8 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     for (final seats in soldMapSeats.values) {
       for (SeatEntity seat in seats) {
         debugPrint("--- Discount ID ${seat.id} ${seat.discountId}");
-        final seatEntity = SeatEntity(id: seat.id, discountId: seat.discountId);
+        final seatEntity = SeatEntity(
+            id: seat.id, discountId: seat.discountId, zoneId: seat.zoneId);
         newSeats.add(seatEntity);
       }
     }
@@ -113,15 +115,13 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     result.fold(
         (failure) => statusCode = failure.statusCode,
         (r) => emit(SeatActivatedState(
-            title: "Успешно!",
-            message: "Поздравляем! Ваша бронь успешно активирована. ")));
+            title: S.current.success,
+            message: S.current.congratulation_activate)));
 
     debugPrint("--- Activating status code: $statusCode");
     if (statusCode == 410) {
       emit(SeatActivateErrorState(
-          title: "Ошибка",
-          message:
-              "Извините, время активации доступно за 30 минут до начала сеанса. Пожалуйста, попробуйте позже."));
+          title: S.current.error, message: S.current.sorry_dont_activated));
     }
   }
 }

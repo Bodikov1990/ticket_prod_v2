@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
-import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 
@@ -10,7 +10,6 @@ part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   TicketEntity _ticketEntity = const TicketEntity();
-  final seatListBloc = SeatListBloc();
 
   String ticketStatus = '';
   String movieName = '';
@@ -27,9 +26,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     _ticketEntity = event.ticketEntity;
 
     if (_ticketEntity.status == 3) {
-      emit(const DetailsTicketStatusError(
-          title: "Активирован", message: "Все билеты уже активированы!"));
-      ticketStatus = 'Билеты уже активированы! ❗';
+      emit(DetailsTicketStatusError(
+          title: S.current.activated,
+          message: S.current.all_tickets_activated));
+      ticketStatus = S.current.tickets_activated;
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
       startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
@@ -41,7 +41,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           startTime: startTime,
           seats: seats));
     } else if (_ticketEntity.status == 2) {
-      ticketStatus = 'Новый ✅';
+      ticketStatus = S.current.new_ticket;
       movieName = _ticketEntity.movie ?? '';
       hallName = _ticketEntity.hall ?? '';
       startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
@@ -90,7 +90,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     List<String> seatStrings = [];
     seatRows.forEach((row, seats) {
       String seatList = seats.join(', ');
-      seatStrings.add('Ряд: $row Места: $seatList');
+      seatStrings.add('${S.current.row}: $row ${S.current.seats}: $seatList');
     });
 
     return seatStrings.join('\n');

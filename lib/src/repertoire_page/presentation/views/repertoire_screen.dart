@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
@@ -6,10 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 
 import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/seance_info_model.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/presentation/bloc/repertoire_bloc.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/presentation/views/seances_list_tile.dart';
+
+enum WeekDay { TODAY, TOMORROW }
 
 @RoutePage()
 class RepertoireScreen extends StatefulWidget {
@@ -25,7 +28,7 @@ class RepertoireScreen extends StatefulWidget {
 
 class _RepertoireScreenState extends State<RepertoireScreen> {
   final _repertoireBloc = RepertoireBloc();
-  String selectedDay = 'Сегодня';
+  WeekDay selectedDay = WeekDay.TODAY;
 
   @override
   void initState() {
@@ -37,7 +40,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
     DateTime now = DateTime.now();
     DateTime targetDate;
 
-    if (selectedDay == 'Завтра') {
+    if (selectedDay == WeekDay.TOMORROW) {
       if (now.hour >= 0 && now.hour < 3) {
         targetDate = DateTime(now.year, now.month, now.day + 0, 7, 0, 0);
       } else {
@@ -61,7 +64,6 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
   }
 
   Future<void> _refreshSeances() async {
-    debugPrint("Вывод ${DateTime.now()}");
     _loadSeances();
   }
 
@@ -69,9 +71,9 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Репертуар',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          S.current.repertoire,
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -94,22 +96,22 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                   Expanded(
                     child: SizedBox(
                       height: 44,
-                      child: CupertinoSlidingSegmentedControl<String>(
-                        children: const {
-                          'Сегодня': SizedBox(
+                      child: CupertinoSlidingSegmentedControl<WeekDay>(
+                        children: {
+                          WeekDay.TODAY: SizedBox(
                               height: 40,
                               child: Center(
                                   child: Text(
-                                'Сегодня',
-                                style: TextStyle(
+                                S.current.today,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w800, fontSize: 18),
                               ))),
-                          'Завтра': SizedBox(
+                          WeekDay.TOMORROW: SizedBox(
                               height: 40,
                               child: Center(
                                   child: Text(
-                                'Завтра',
-                                style: TextStyle(
+                                S.current.tomorrow,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w800, fontSize: 18),
                               ))),
                         },
@@ -177,10 +179,10 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                                     ),
                             itemCount: state.seances.length);
                       } else {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'Нет расписаний',
-                            style: TextStyle(
+                            S.current.empty_seance,
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Colors.grey,
                             ),
@@ -189,10 +191,10 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
                       }
                     }
 
-                    return const Center(
+                    return Center(
                       child: Text(
-                        'Нет расписаний',
-                        style: TextStyle(
+                        S.current.empty_seance,
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Colors.grey,
                         ),

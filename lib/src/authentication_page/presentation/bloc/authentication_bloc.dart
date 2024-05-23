@@ -1,46 +1,44 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/authenticate_usecase.dart';
 import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/check_ping_usecase.dart';
+import 'package:ticket_prod_v2/src/settings/data/models/settings_model.dart';
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/save_user_usecase.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  final SettingsRepository _settingsRepository = SettingsRepository();
   final ChecPingUseCase _checPingUseCase = ChecPingUseCase();
   final AuthenticateUseCase _authenticateUseCase = AuthenticateUseCase();
-  final GetUserUseCase _getUserUseCase = GetUserUseCase();
-  final SaveUserUseCase _saveUserUseCase = SaveUserUseCase();
+
   UserModel userModel = UserModel();
 
   AuthenticationBloc() : super(const AuthenticationInitial()) {
     on<CheckPingEvent>(_checkPingHandler);
     on<CheckAuthenticationEvent>(_checkAuthHandler);
-    on<AuthenticateEvent>(_authenticateHandler);
+    on<SaveAuthenticationDataEvent>(_saveSettings);
   }
 
   Future<void> _checkPingHandler(
       CheckPingEvent event, Emitter<AuthenticationState> emit) async {
     emit(const CheckPingState());
+    final settings = await _settingsRepository.getSettings();
 
-    final result = await _getUserUseCase();
-    result.fold(
-        (failure) => _showError(failure.statusCode, failure.message, emit),
-        (user) => userModel = user);
-
-    String? baseURL = userModel.baseURL;
+    String? baseURL = settings.ipAddress;
 
     if (baseURL != null) {
       final result =
           await _checPingUseCase(CheckPingUseCaseParams(baseURL: baseURL));
 
       result.fold(
-          (failure) => _showError(failure.statusCode, failure.message, emit),
+          (failure) =>
+              emit(AuthErrorState(failure.message, failure.statusCode)),
           (r) => emit(const CheckedPingSuccesState()));
     }
   }
@@ -49,72 +47,34 @@ class AuthenticationBloc
       CheckAuthenticationEvent event, Emitter<AuthenticationState> emit) async {
     emit(const CheckAuthenticationState());
 
-    final user = await _getUserUseCase();
+    final settings = await _settingsRepository.getSettings();
+    final String? login = settings.login;
+    final String? password = settings.password;
 
-    user.fold(
-        (failure) => emit(
-            const CheckedAuthenticationErrorState(login: "", password: "")),
-        (userModel) => _checkedAuth(userModel, emit));
-  }
-
-  Future<void> _checkedAuth(
-      UserModel userModel, Emitter<AuthenticationState> emit) async {
-    DateTime expiredAtFromSource = DateTime.now();
-
-    try {
-      if (userModel.expiredAt == null) {
-        expiredAtFromSource = DateTime.fromMicrosecondsSinceEpoch(0);
-      } else {
-        expiredAtFromSource =
-            DateTime.parse(userModel.expiredAt?.substring(0, 19) ?? '');
-      }
-    } catch (ignored) {
-      expiredAtFromSource = DateTime.fromMicrosecondsSinceEpoch(0);
-    }
-
-    if (expiredAtFromSource.isBefore(DateTime.now())) {
-      final result = await _authenticateUseCase(AuthenticateUseCaseParams(
-          login: userModel.login, password: userModel.password));
-      result.fold((l) => null,
-          (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
-      emit(CheckedAuthenticationState(this.userModel));
-    } else {
-      emit(CheckedAuthenticationState(userModel));
+    if ((login?.isNotEmpty ?? false) && (password?.isNotEmpty ?? false)) {
+      final result = await _authenticateUseCase(
+          AuthenticateUseCaseParams(login: login, password: password));
+      result.fold(
+          (failure) =>
+              emit(AuthErrorState(failure.message, failure.statusCode)),
+          (authData) => emit(CheckedAuthenticationState(
+              accessToken: authData?.accessToken,
+              expiredAt: authData?.expiredAt)));
     }
   }
 
-  Future<void> _authenticateHandler(
-      AuthenticateEvent event, Emitter<AuthenticationState> emit) async {
-    final result = await _authenticateUseCase(AuthenticateUseCaseParams(
-        login: event.login, password: event.password));
+  Future<void> _saveSettings(SaveAuthenticationDataEvent event,
+      Emitter<AuthenticationState> emit) async {
+    SettingsModel settings = await _settingsRepository.getSettings();
+    String? accessToken = event.accessToken;
+    String? expiredAt = event.expiredAt;
 
-    result.fold(
-        (failure) => _showError(failure.statusCode, failure.message, emit),
-        (authData) => _saveUser(authData?.accessToken, authData?.expiredAt));
+    if (accessToken != null && accessToken.isNotEmpty) {
+      settings.accessToken = accessToken;
+      settings.expiredAt = expiredAt;
 
-    if (userModel.accessToken != null) {
+      settings = await _settingsRepository.saveSettings(settings);
       emit(const AuthenticatedState());
-    }
-  }
-
-  Future<void> _saveUser(String? accessToken, String? expiredAt) async {
-    userModel.accessToken = accessToken;
-    userModel.expiredAt = expiredAt;
-    await _saveUserUseCase(SaveUserUseCaseParams(user: userModel));
-  }
-
-  void _showError(
-      int statusCode, String message, Emitter<AuthenticationState> emit) {
-    if (statusCode == 401) {
-      emit(const AuthenticationErrorState("Ошибка!", 'Неверный пароль'));
-    } else if (statusCode == 404) {
-      emit(const AuthenticationErrorState("Ошибка!", 'Неверный логин'));
-    } else if (message == 'The connection errored') {
-      emit(const AuthenticationErrorState("Нет связи с сервером!",
-          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
-    } else {
-      emit(const CheckedPingErrorState("Нет связи с сервером!",
-          'Пожалуйста проверьте правильно ли заполнили адрес сервера!'));
     }
   }
 }

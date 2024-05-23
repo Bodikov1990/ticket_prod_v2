@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:ticket_prod_v2/core/viewmodels/theme_view_model.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
@@ -81,15 +83,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
           }
 
           return Scaffold(
-              appBar: AppBar(
-                title: const Text(
-                  "Детали билета",
-                  style: TextStyle(color: Colors.white),
-                ),
+            appBar: AppBar(
+              title: Text(
+                S.current.ticket_details,
+                style: const TextStyle(color: Colors.white),
               ),
-              backgroundColor: backgroundColor,
-              body: _buildBodyBasedOnState(state),
-              floatingActionButton: BlocListener<SeatListBloc, SeatListState>(
+            ),
+            backgroundColor: backgroundColor,
+            body: _buildBodyBasedOnState(state),
+            floatingActionButton: BlocListener<SeatListBloc, SeatListState>(
                 bloc: _seatListBloc,
                 listener: (context, state) {
                   if (state is SeatActivateErrorState) {
@@ -118,8 +120,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     );
                   }
                 },
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 31, 44, 67),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(ThemeViewModel().mainBlue),
+                      foregroundColor:
+                          const MaterialStatePropertyAll(Colors.white)),
                   onPressed: () {
                     if (widget.ticket.status == 3) {
                       GetIt.I<Talker>().debug(
@@ -130,9 +136,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       _activateSeats();
                     }
                   },
-                  child: const Text('OK'),
-                ),
-              ));
+                  child: Text(S.current.activate),
+                )),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
         },
       ),
     );
@@ -152,7 +160,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       );
     } else {
       return const Center(
-        child: Text('Загрузка данных или сообщение об ошибке'),
+        child: Text('Something went wrong...'),
       );
     }
   }
@@ -183,7 +191,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: "Статус",
+            label: S.current.status,
             value: ticketStatus,
           )),
       const SizedBox(
@@ -192,7 +200,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: 'Фильм',
+            label: S.current.movie,
             value: movieName,
           )),
       const SizedBox(
@@ -201,7 +209,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: 'Зал',
+            label: S.current.hall,
             value: hallName,
           )),
       const SizedBox(
@@ -210,13 +218,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
       borderBuild(
           ticketStatus,
           TicketInfoWidget(
-            label: 'Начало сеанса',
+            label: S.current.start_time,
             value: startTime,
           )),
       const SizedBox(
         height: 10,
       ),
-      borderBuild(ticketStatus, TicketInfoWidget(label: 'Места', value: seats)),
+      borderBuild(
+          ticketStatus, TicketInfoWidget(label: S.current.seats, value: seats)),
       Container(
           width: MediaQuery.of(context).size.width - 16,
           padding: const EdgeInsets.symmetric(horizontal: 16),

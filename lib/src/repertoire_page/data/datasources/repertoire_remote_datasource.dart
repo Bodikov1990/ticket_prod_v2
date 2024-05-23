@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/schedule_entity.dart';
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class RepertoireRemoteDataSource {
   Future<List<ScheduleEntity>> getSchedule({required String date});
@@ -10,9 +11,15 @@ abstract class RepertoireRemoteDataSource {
 
 class RepertoireRemoteDataSourceImpl implements RepertoireRemoteDataSource {
   final Dio _dio = GetIt.instance<Dio>();
+  final SettingsRepository _repository = SettingsRepository();
 
   @override
   Future<List<ScheduleEntity>> getSchedule({required String date}) async {
+    final settings = await _repository.getSettings();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${settings.accessToken}'
+    };
+    _dio.options.headers = headers;
     try {
       Response response = await _dio.get(
         '/api/schedule?date_from=$date&sort=movie.created_at:desc&sort=seance.timeframe.start:asc&skip=0&limit=0',

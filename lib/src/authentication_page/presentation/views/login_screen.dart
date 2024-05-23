@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/authentication_page/presentation/bloc/authentication_bloc.dart';
 
@@ -15,12 +16,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   int _titleTapCount = 0;
 
-  final _authenticationBloc = AuthenticationBloc();
+  AuthenticationBloc? _authenticationBloc;
 
   @override
   void initState() {
     super.initState();
-    _authenticationBloc.add(CheckPingEvent());
+    _authenticationBloc =
+        BlocProvider.of<AuthenticationBloc>(context, listen: false);
+    _authenticationBloc?.add(CheckPingEvent());
   }
 
   @override
@@ -44,36 +47,50 @@ class _LoginScreenState extends State<LoginScreen> {
           centerTitle: true,
         ),
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
-          bloc: _authenticationBloc,
           listener: (context, state) {
-            if (state is CheckedPingErrorState) {
-              _showAlert(title: state.title, content: state.message);
-            } else if (state is AuthenticationErrorState) {
-              _showAlert(title: state.title, content: state.message);
+            if (state is AuthErrorState) {
+              _showErrorByStatusCode(state.statusCode, state.message);
+            } else if (state is CheckedPingSuccesState) {
+              _authenticationBloc?.add(const CheckAuthenticationEvent());
+            } else if (state is CheckedAuthenticationState) {
+              _authenticationBloc?.add(SaveAuthenticationDataEvent(
+                  accessToken: state.accessToken, expiredAt: state.expiredAt));
+            } else if (state is AuthenticatedState) {
+              AutoRouter.of(context).replace(const TabBarRoute());
             }
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            bloc: _authenticationBloc,
             builder: (context, state) {
-              if (state is CheckPingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is CheckedPingSuccesState) {
-                _authenticationBloc.add(const CheckAuthenticationEvent());
-              } else if (state is CheckedAuthenticationState) {
-                String? login = state.user.login;
-                String? password = state.user.password;
-                String? expiredAt = state.user.expiredAt;
-                if (login != null && password != null && expiredAt != null) {
-                  _authenticationBloc.add(AuthenticateEvent(
-                      login: login, password: password, expiredAt: expiredAt));
-                }
-              } else if (state is AuthenticatedState) {
-                AutoRouter.of(context).replace(const TabBarRoute());
-              }
-              return Container();
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ));
+  }
+
+  void _showErrorByStatusCode(int statusCode, String message) {
+    if (statusCode == 401) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.user_validation_password);
+    } else if (statusCode == 404) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.users_not_found_error);
+    } else if (statusCode == 400) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.user_validation_password);
+    } else if (statusCode == 0) {
+      _showAlert(
+          title: S.current.no_connection,
+          content: S.current.please_check_connection);
+    } else if (message == 'The connection errored') {
+      _showAlert(
+          title: S.current.no_connection,
+          content: S.current.please_check_connection);
+    } else {
+      _showAlert(title: S.current.unknown_error, content: message);
+    }
   }
 
   _showAlert({String? title, String? content}) {

@@ -1,10 +1,10 @@
 part of 'authentication_bloc.dart';
 
-sealed class AuthenticationEvent extends Equatable {
+abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class CheckPingEvent extends AuthenticationEvent {}
@@ -22,14 +22,16 @@ class AuthenticateEvent extends AuthenticationEvent {
       {required this.login, required this.password, required this.expiredAt});
 
   @override
-  List<Object> get props => [login, password, expiredAt];
+  List<Object?> get props => [login, password, expiredAt];
 }
 
 class SaveAuthenticationDataEvent extends AuthenticationEvent {
-  final String accessToken;
+  final String? accessToken;
+  final String? expiredAt;
 
-  const SaveAuthenticationDataEvent({required this.accessToken});
+  const SaveAuthenticationDataEvent(
+      {required this.accessToken, this.expiredAt});
 
   @override
-  List<Object> get props => [accessToken];
+  List<Object?> get props => [accessToken, expiredAt];
 }

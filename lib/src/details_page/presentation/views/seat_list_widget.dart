@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
@@ -58,16 +59,16 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 4.0,
                 ),
                 Text(
-                  "Находятся в зале: ${state.activatedMapSeats.values.length}",
+                  "${S.current.in_the_hall}: ${state.activatedMapSeats.values.length}",
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
-                const Text(
-                  "Билеты",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  S.current.tickets,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4.0),
                 for (final entry in state.soldMapSeats.entries)
@@ -112,24 +113,24 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                          'Количество билетов: ${state.allMapSeats[entry.key]?.length}'),
+                          '${S.current.tickets_count}: ${state.allMapSeats[entry.key]?.length}'),
                       const SizedBox(height: 8.0),
                     ],
                   ),
               ],
             );
           } else if (state is SeatListActivatingState) {
-            return const Center(
+            return Center(
               child: Column(
                 children: [
                   Text(
-                    'Активация мест...',
-                    style: TextStyle(fontWeight: FontWeight.w900),
+                    S.current.seats_activating,
+                    style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
                 ],
               ),
             );

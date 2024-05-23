@@ -5,7 +5,7 @@ abstract class AuthenticationState extends Equatable {
   const AuthenticationState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AuthenticationInitial extends AuthenticationState {
@@ -20,16 +20,16 @@ class CheckedPingSuccesState extends AuthenticationState {
   const CheckedPingSuccesState();
 }
 
-class CheckedPingErrorState extends AuthenticationState {
-  final String title;
+class AuthErrorState extends AuthenticationState {
   final String message;
-  const CheckedPingErrorState(
-    this.title,
+  final int statusCode;
+  const AuthErrorState(
     this.message,
+    this.statusCode,
   );
 
   @override
-  List<Object> get props => [title, message];
+  List<Object?> get props => [message, statusCode];
 }
 
 class CheckAuthenticationState extends AuthenticationState {
@@ -37,13 +37,12 @@ class CheckAuthenticationState extends AuthenticationState {
 }
 
 class CheckedAuthenticationState extends AuthenticationState {
-  final UserModel user;
-  const CheckedAuthenticationState(
-    this.user,
-  );
+  final String? accessToken;
+  final String? expiredAt;
+  const CheckedAuthenticationState({required this.accessToken, this.expiredAt});
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [accessToken, expiredAt];
 }
 
 class AuthenticatingState extends AuthenticationState {
@@ -54,19 +53,6 @@ class AuthenticatedState extends AuthenticationState {
   const AuthenticatedState();
 }
 
-class AuthenticationErrorState extends AuthenticationState {
-  final String title;
-  final String message;
-
-  const AuthenticationErrorState(
-    this.title,
-    this.message,
-  );
-
-  @override
-  List<Object> get props => [message, title];
-}
-
 class CheckedAuthenticationErrorState extends AuthenticationState {
   final String? login;
   final String? password;
@@ -75,5 +61,5 @@ class CheckedAuthenticationErrorState extends AuthenticationState {
       {required this.login, required this.password});
 
   @override
-  List<Object> get props => [login ?? '', password ?? ''];
+  List<Object?> get props => [login, password];
 }

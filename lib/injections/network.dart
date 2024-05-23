@@ -5,9 +5,10 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
 
-const TIMEOUT = 60000;
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
+
+const TIMEOUT = 20000;
 final getIt = GetIt.instance;
 
 class AppVersionInterceptor extends Interceptor {
@@ -16,31 +17,19 @@ class AppVersionInterceptor extends Interceptor {
   AppVersionInterceptor({required this.version});
 }
 
-Future<String> _apiToken() async {
-  GetUserUseCase getUserUseCase = GetUserUseCase();
-  String? token = '';
-  final result = await getUserUseCase();
-  result.fold((l) => null, (user) => token = user.accessToken);
-
-  return token ?? '';
-}
-
 Future<String?> _baseUrl() async {
-  GetUserUseCase getUserUseCase = GetUserUseCase();
-  String? baseURL = '';
-  final result = await getUserUseCase();
-  result.fold((l) => null, (user) => baseURL = user.baseURL);
-
-  return baseURL;
+  final SettingsRepository repository = SettingsRepository();
+  final setting = await repository.getSettings();
+  return setting.ipAddress;
 }
 
-void init() async {
+Future<void> init() async {
   String? baseURL = await _baseUrl();
-  String? accessToken = await _apiToken();
-  final Map<String, String> headers = {'Authorization': 'Bearer $accessToken'};
 
   // Register Dio
-  final Dio dio = Dio(BaseOptions(baseUrl: baseURL ?? '', headers: headers));
+  final Dio dio = Dio(BaseOptions(
+    baseUrl: baseURL ?? '',
+  ));
   dio.interceptors.add(TalkerDioLogger(
       talker: GetIt.I<Talker>(),
       settings: const TalkerDioLoggerSettings(

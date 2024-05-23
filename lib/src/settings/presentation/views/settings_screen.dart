@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/main.dart';
+import 'package:ticket_prod_v2/router/auto_routes.dart';
 
 import 'package:ticket_prod_v2/src/settings/presentation/bloc/settings_bloc.dart';
 
@@ -18,6 +20,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _settingsBloc = SettingsBloc();
+  int _titleTapCount = 0;
 
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _prefixController = TextEditingController();
@@ -59,9 +62,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: Colors.white),
+        title: GestureDetector(
+          onTap: () {
+            setState(() {
+              _titleTapCount++;
+              if (_titleTapCount == 20) {
+                AutoRouter.of(context).push(const LanguageRoute());
+                _titleTapCount = 0;
+              }
+            });
+          },
+          child: const Text(
+            'Settings',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: BlocConsumer<SettingsBloc, SettingsState>(
@@ -69,24 +83,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
         listener: (context, state) {
           if (state is SettingsGetUserSuccessState) {
             _initAddressController(
-                state.userModel.baseURL,
-                state.userModel.prefix,
-                state.userModel.login,
-                state.userModel.password);
-          } else if (state is SettingsGetUserErrorState) {
+              state.settings.ipAddress,
+              state.settings.prefix,
+              state.settings.login,
+              state.settings.password,
+            );
+          } else if (state is SettingsAuthenticatedState) {
+            _settingsBloc.add(
+              SettingsSaveTokenEvent(
+                  login: state.login,
+                  password: state.password,
+                  baseURL: state.baseURL,
+                  prefix: state.prefix,
+                  token: state.token,
+                  expiredAt: state.expiredAt),
+            );
+          } else if (state is SettingsSavedState) {
+            RestartWidget.restartApp(context);
+          } else if (state is SettingsAuthErrorState) {
+            _showErrorByStatusCode(state.stausCode, state.message);
+          } else if (state is SettingsGetErrorState) {
             _addressController.text = 'http://';
-          } else if (state is SettingsAuthenticateErrorState) {
-            _showAlert(title: state.title, content: state.message);
           }
         },
         builder: (context, state) {
-          if (state is SettingsSavedUserState) {
-            _settingsBloc.add(SettingsAuthenticateEvent(
-                state.login, state.password, state.baseURL));
-          } else if (state is SettingsAuthenticatedState) {
-            _settingsBloc.add(SettingsSaveTokenEvent(state.token));
-            RestartWidget.restartApp(context);
-          }
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -136,6 +156,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  void _showErrorByStatusCode(int statusCode, String message) {
+    if (statusCode == 401) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.user_validation_password);
+    } else if (statusCode == 404) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.users_not_found_error);
+    } else if (statusCode == 400) {
+      _showAlert(
+          title: S.current.auth_login_error,
+          content: S.current.user_validation_password);
+    } else if (statusCode == 0) {
+      _showAlert(
+          title: S.current.no_connection,
+          content: S.current.please_check_connection);
+    } else if (message == 'The connection errored') {
+      _showAlert(
+          title: S.current.no_connection,
+          content: S.current.please_check_connection);
+    } else {
+      _showAlert(title: S.current.unknown_error, content: message);
+    }
   }
 
   _showAlert({String? title, String? content}) {
