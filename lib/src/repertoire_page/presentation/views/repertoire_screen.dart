@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ticket_prod_v2/core/viewmodels/constants.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 
 import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/seance_info_model.dart';
@@ -70,9 +71,21 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          S.current.repertoire,
-          style: const TextStyle(color: Colors.white),
+        title: GestureDetector(
+          onDoubleTap: () {
+            showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                      title: Text(
+                        "Version $version",
+                        textAlign: TextAlign.center,
+                      ),
+                    ));
+          },
+          child: Text(
+            S.current.repertoire,
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
         centerTitle: true,
       ),
