@@ -18,14 +18,15 @@ class RezervationNumberScreen extends StatefulWidget {
 
 class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
   final TextEditingController _reservationNumber = TextEditingController();
-  final _rezrvationBloc = RezervationNumberBloc();
+
   bool isEnabledBtn = true;
   int _titleTapCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _rezrvationBloc.add(RezervationGetUserEvent());
+    BlocProvider.of<RezervationNumberBloc>(context)
+        .add(RezervationGetUserEvent());
     _reservationNumber.addListener(() {
       final inputString = _reservationNumber.text;
 
@@ -64,19 +65,18 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                 }
               });
             },
-            child: const Text(
-              'Номер брони',
-              style: TextStyle(color: Colors.white),
+            child: Text(
+              S.current.rezervation_number,
+              style: const TextStyle(color: Colors.white),
             )),
         centerTitle: true,
       ),
       body: BlocConsumer<RezervationNumberBloc, RezervationNumberState>(
-        bloc: _rezrvationBloc,
         listener: (context, state) {
           if (state is RezervationGetTicketErrorState) {
             _showAlert(title: state.title, content: state.message);
           } else if (state is RezervationGetUserSuccesState) {
-            String? prefix = state.userModel.prefix;
+            String? prefix = state.prefix;
             if (prefix != null) {
               _reservationNumber.text = prefix;
             }
@@ -86,14 +86,14 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                 state.ticketEntity.status == 4 ||
                 state.ticketEntity.status == 5) {
               _showAlert(
-                  title: 'Ошибка',
-                  content: 'Билет отправлен на возврат. Спасибо за обращение!');
+                  title: S.current.error, content: S.current.tickets_returned);
             } else {
               AutoRouter.of(context).push(DetailsRoute(
                   ticket: state.ticketEntity,
                   onTapOk: (isBackTapped) {
                     if (isBackTapped) {
-                      _rezrvationBloc.add(RezervationGetUserEvent());
+                      BlocProvider.of<RezervationNumberBloc>(context)
+                          .add(RezervationGetUserEvent());
                     }
                   }));
             }
@@ -134,8 +134,9 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                       onPressed: isEnabledBtn
                           ? () {
                               final number = _reservationNumber.text;
-                              _rezrvationBloc.add(RezervationGetNumberEvent(
-                                  number: number.substring(2)));
+                              BlocProvider.of<RezervationNumberBloc>(context)
+                                  .add(RezervationGetNumberEvent(
+                                      number: number.substring(2)));
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
@@ -145,7 +146,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                           disabledBackgroundColor:
                               const Color.fromARGB(255, 31, 44, 67)
                                   .withOpacity(0.12)),
-                      child: const Text("Проверить бронь"),
+                      child: Text(S.current.check_rezervation_number),
                     )
                   ],
                 ),
@@ -178,7 +179,8 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              _rezrvationBloc.add(RezervationGetUserEvent());
+              BlocProvider.of<RezervationNumberBloc>(context)
+                  .add(RezervationGetUserEvent());
             },
             child: const Text(
               'Ок',

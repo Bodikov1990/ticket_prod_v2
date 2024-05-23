@@ -1,20 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/domain/usecases/get_number_rezervation_usecase.dart';
-import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
-import 'package:ticket_prod_v2/src/user/domain/usecases/get_user_usecase.dart';
+import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 part 'rezervation_number_event.dart';
 part 'rezervation_number_state.dart';
 
 class RezervationNumberBloc
     extends Bloc<RezervationNumberEvent, RezervationNumberState> {
-  GetUserUseCase getUserUseCase = GetUserUseCase();
   final GetNumberRezervationUseCase _getNumberRezervationUseCase =
       GetNumberRezervationUseCase();
-  UserModel userModel = UserModel();
+  final SettingsRepository _settingsRepository = SettingsRepository();
 
   RezervationNumberBloc() : super(RezervationNumberInitial()) {
     on<RezervationGetUserEvent>(_getUserEvent);
@@ -23,14 +22,12 @@ class RezervationNumberBloc
 
   Future<void> _getUserEvent(RezervationGetUserEvent event,
       Emitter<RezervationNumberState> emit) async {
-    final result = await getUserUseCase();
+    final settings = await _settingsRepository.getSettings();
 
-    result.fold((failure) => null, (user) => userModel = user);
-
-    String? prefix = userModel.prefix;
+    String? prefix = settings.prefix;
 
     if (prefix != null) {
-      emit(RezervationGetUserSuccesState(userModel: userModel));
+      emit(RezervationGetUserSuccesState(prefix: prefix));
     }
   }
 
@@ -49,10 +46,8 @@ class RezervationNumberBloc
 
   void _showError(int statusCode, Emitter<RezervationNumberState> emit) {
     if (statusCode == 404) {
-      emit(const RezervationGetTicketErrorState(
-          title: "Ошибка!",
-          message:
-              'Извините, бронь не найдена. Пожалуйста, проверьте введенный номер брони и попробуйте снова.'));
+      emit(RezervationGetTicketErrorState(
+          title: S.current.error, message: S.current.reservation_not_found));
     }
   }
 }

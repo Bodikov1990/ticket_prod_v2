@@ -33,6 +33,11 @@ class MainAppBloc extends Bloc<MainAppEvent, MainAppState> {
   Future<void> _saveLocale(Locale locale) async {
     final settingsModel = await _settingsRepository.getSettings();
     settingsModel.languageModel?.languageCode = locale.languageCode;
+    if (locale.languageCode == 'ru' || locale.languageCode == 'en') {
+      settingsModel.env = Environment.PRODUCTION;
+    } else {
+      settingsModel.env = Environment.PRODUCTION_UA;
+    }
     await _settingsRepository.saveSettings(settingsModel);
   }
 
@@ -43,11 +48,7 @@ class MainAppBloc extends Bloc<MainAppEvent, MainAppState> {
     switch (env) {
       case Environment.PRODUCTION:
         languageCode = 'ru';
-      case Environment.TEST:
-        languageCode = 'ru';
       case Environment.PRODUCTION_UA:
-        languageCode = 'uk';
-      case Environment.TEST_UA:
         languageCode = 'uk';
       default:
         languageCode = 'en';

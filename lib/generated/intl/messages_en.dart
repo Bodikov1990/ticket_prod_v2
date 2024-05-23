@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter IP address"),
         "enter_rezervation_number":
             MessageLookupByLibrary.simpleMessage("Enter reservation number"),
+        "enter_username":
+            MessageLookupByLibrary.simpleMessage("Enter username"),
         "error": MessageLookupByLibrary.simpleMessage("Error!"),
         "hall": MessageLookupByLibrary.simpleMessage("Hall"),
         "in_the_hall": MessageLookupByLibrary.simpleMessage("In the hall"),
@@ -57,13 +59,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please check that you have filled in the server address correctly!"),
         "qr": MessageLookupByLibrary.simpleMessage("QR"),
         "repertoire": MessageLookupByLibrary.simpleMessage("Repertoire"),
+        "reservation_not_found": MessageLookupByLibrary.simpleMessage(
+            "Sorry, reservation not found. Please check the entered reservation number and try again."),
         "rezervation_number":
             MessageLookupByLibrary.simpleMessage("Reservation number"),
         "row": MessageLookupByLibrary.simpleMessage("Row"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "seats": MessageLookupByLibrary.simpleMessage("Seats"),
         "seats_activating":
             MessageLookupByLibrary.simpleMessage("Activating seats..."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "show_log": MessageLookupByLibrary.simpleMessage("Show log"),
         "sorry_dont_activated": MessageLookupByLibrary.simpleMessage(
             "Sorry, activation time is available 30 minutes before the session starts. Please try later."),
         "start_time": MessageLookupByLibrary.simpleMessage("Start time"),
@@ -76,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Tickets already activated! ❗"),
         "tickets_count":
             MessageLookupByLibrary.simpleMessage("Number of tickets"),
+        "tickets_returned": MessageLookupByLibrary.simpleMessage(
+            "Ticket has been sent for refund."),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "tomorrow": MessageLookupByLibrary.simpleMessage("Tomorrow"),
         "unknown_error": MessageLookupByLibrary.simpleMessage("Unknown error"),

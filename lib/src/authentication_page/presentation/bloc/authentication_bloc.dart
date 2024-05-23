@@ -6,8 +6,6 @@ import 'package:ticket_prod_v2/src/authentication_page/domain/usecases/check_pin
 import 'package:ticket_prod_v2/src/settings/data/models/settings_model.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
-import 'package:ticket_prod_v2/src/user/data/models/user_model.dart';
-
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
@@ -16,8 +14,6 @@ class AuthenticationBloc
   final SettingsRepository _settingsRepository = SettingsRepository();
   final ChecPingUseCase _checPingUseCase = ChecPingUseCase();
   final AuthenticateUseCase _authenticateUseCase = AuthenticateUseCase();
-
-  UserModel userModel = UserModel();
 
   AuthenticationBloc() : super(const AuthenticationInitial()) {
     on<CheckPingEvent>(_checkPingHandler);

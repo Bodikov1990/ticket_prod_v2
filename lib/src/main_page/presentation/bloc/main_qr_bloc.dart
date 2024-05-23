@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/usecases/get_rezervation_usecase.dart';
 
@@ -27,7 +28,7 @@ class MainQrBloc extends Bloc<MainQrEvent, MainQrState> {
         ticketEntity?.status == 4 ||
         ticketEntity?.status == 5) {
       emit(MainQrGetRezervationErrorState(
-          message: "Билет отправлен на возврат. Спасибо за обращение!"));
+          message: S.current.reservation_not_found));
     } else {
       if (ticketEntity != null) {
         emit(MainQrGetRezervationSuccesState(

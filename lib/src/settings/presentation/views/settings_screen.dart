@@ -19,7 +19,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _settingsBloc = SettingsBloc();
   int _titleTapCount = 0;
 
   final TextEditingController _addressController = TextEditingController();
@@ -30,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _settingsBloc.add(SettingsGetUserEvent());
+    BlocProvider.of<SettingsBloc>(context).add(SettingsGetUserEvent());
   }
 
   @override
@@ -51,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _setAPI() async {
-    _settingsBloc.add(SettingsSaveUserEvent(
+    BlocProvider.of<SettingsBloc>(context).add(SettingsSaveUserEvent(
         baseURL: _addressController.text,
         prefix: _prefixController.text,
         login: _usernameController.text,
@@ -72,14 +71,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }
             });
           },
-          child: const Text(
-            'Settings',
-            style: TextStyle(color: Colors.white),
+          child: Text(
+            S.current.settings,
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
       body: BlocConsumer<SettingsBloc, SettingsState>(
-        bloc: _settingsBloc,
         listener: (context, state) {
           if (state is SettingsGetUserSuccessState) {
             _initAddressController(
@@ -89,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               state.settings.password,
             );
           } else if (state is SettingsAuthenticatedState) {
-            _settingsBloc.add(
+            BlocProvider.of<SettingsBloc>(context).add(
               SettingsSaveTokenEvent(
                   login: state.login,
                   password: state.password,
@@ -117,15 +115,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(height: 16.0),
                   textField(_prefixController, "Prefix"),
                   const SizedBox(height: 16.0),
-                  textField(_usernameController, "Username"),
+                  textField(_usernameController, S.current.enter_username),
                   const SizedBox(height: 16.0),
-                  textField(_passwordController, "Password"),
+                  textField(_passwordController, S.current.password),
                   const SizedBox(height: 50.0),
                   ElevatedButton(
                     onPressed: () {
                       _setAPI();
                     },
-                    child: const Text('Update settings'),
+                    child: Text(S.current.save),
                   ),
                   const SizedBox(
                     height: 16,
@@ -136,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             builder: (context) =>
                                 TalkerScreen(talker: GetIt.I<Talker>())));
                       },
-                      child: const Text('Show Log'))
+                      child: Text(S.current.show_log))
                 ],
               ),
             ),

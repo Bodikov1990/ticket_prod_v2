@@ -27,7 +27,6 @@ class RepertoireScreen extends StatefulWidget {
 }
 
 class _RepertoireScreenState extends State<RepertoireScreen> {
-  final _repertoireBloc = RepertoireBloc();
   WeekDay selectedDay = WeekDay.TODAY;
 
   @override
@@ -54,7 +53,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
       }
     }
 
-    _repertoireBloc
+    BlocProvider.of<RepertoireBloc>(context)
         .add(RepertoireLoadingEvent(date: _formatDateTime(targetDate)));
   }
 
@@ -78,7 +77,6 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
         centerTitle: true,
       ),
       body: BlocListener<RepertoireBloc, RepertoireState>(
-        bloc: _repertoireBloc,
         listener: (context, state) {
           if (state is RepertoireLoadedErrorState) {
             _showAlert(
@@ -132,7 +130,6 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
               child: RefreshIndicator(
                 onRefresh: _refreshSeances,
                 child: BlocBuilder<RepertoireBloc, RepertoireState>(
-                  bloc: _repertoireBloc,
                   builder: (context, state) {
                     if (state is RepertoireLoadingState) {
                       return const Center(

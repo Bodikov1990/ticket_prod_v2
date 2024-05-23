@@ -9,12 +9,10 @@ import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
 
 class SeatListWidget extends StatefulWidget {
   final List<SeatEntity>? seats;
-  final SeatListBloc seatListBloc;
 
   const SeatListWidget({
     Key? key,
     required this.seats,
-    required this.seatListBloc,
   }) : super(key: key);
 
   @override
@@ -26,7 +24,8 @@ class _SeatListWidgetState extends State<SeatListWidget> {
   void initState() {
     super.initState();
     if (widget.seats != null) {
-      widget.seatListBloc.add(SeatFilterEvent(seats: widget.seats ?? []));
+      BlocProvider.of<SeatListBloc>(context)
+          .add(SeatFilterEvent(seats: widget.seats ?? []));
     }
   }
 
@@ -38,7 +37,6 @@ class _SeatListWidgetState extends State<SeatListWidget> {
 
     return SingleChildScrollView(
         child: BlocListener<SeatListBloc, SeatListState>(
-      bloc: widget.seatListBloc,
       listener: (context, state) {
         if (state is SeatActivateErrorState) {
           // _showAlert(
@@ -49,7 +47,6 @@ class _SeatListWidgetState extends State<SeatListWidget> {
         }
       },
       child: BlocBuilder<SeatListBloc, SeatListState>(
-        bloc: widget.seatListBloc,
         builder: (context, state) {
           if (state is SeatFilteredState) {
             return Column(
@@ -89,7 +86,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                             children: [
                               ElevatedButton(
                                 onPressed: (() {
-                                  widget.seatListBloc.add(
+                                  BlocProvider.of<SeatListBloc>(context).add(
                                       SeatRemoveEvent(discountName: entry.key));
                                 }),
                                 child: const Icon(Icons.remove),
@@ -102,7 +99,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                               const SizedBox(width: 8.0),
                               ElevatedButton(
                                 onPressed: (() {
-                                  widget.seatListBloc.add(
+                                  BlocProvider.of<SeatListBloc>(context).add(
                                       SeatAddEvent(discountName: entry.key));
                                 }),
                                 child: const Icon(Icons.add),

@@ -30,9 +30,6 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  final _detailsBloc = DetailsBloc();
-  final _seatListBloc = SeatListBloc();
-
   Color scaffoldColor = Colors.white;
   Color newTicketColor = const Color.fromARGB(255, 105, 225, 197);
   Color usedTicketColor = const Color.fromARGB(251, 247, 240, 172);
@@ -42,21 +39,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _detailsBloc
+    BlocProvider.of<DetailsBloc>(context)
         .add(DetailsCheckTicketStatusEvent(ticketEntity: widget.ticket));
   }
 
   void _activateSeats() {
     if (id != null) {
       GetIt.I<Talker>().debug('Tapped ACTIVATE button');
-      _seatListBloc.add(SeatActivateEvent(ticketID: id ?? ''));
+      BlocProvider.of<SeatListBloc>(context)
+          .add(SeatActivateEvent(ticketID: id ?? ''));
     }
   }
 
   @override
   Widget build(BuildContext contextMain) {
     return BlocListener<DetailsBloc, DetailsState>(
-      bloc: _detailsBloc,
       listener: (listenerContext, state) {
         if (state is DetailsTicketStatusError) {
           GetIt.I<Talker>().debug('SEATS ALREADY ACTIVATED');
@@ -71,7 +68,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
         }
       },
       child: BlocBuilder<DetailsBloc, DetailsState>(
-        bloc: _detailsBloc,
         builder: (builderContext, state) {
           Color backgroundColor = scaffoldColor;
 
@@ -92,7 +88,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
             backgroundColor: backgroundColor,
             body: _buildBodyBasedOnState(state),
             floatingActionButton: BlocListener<SeatListBloc, SeatListState>(
-                bloc: _seatListBloc,
                 listener: (context, state) {
                   if (state is SeatActivateErrorState) {
                     GetIt.I<Talker>().debug('Seats activated: ERROR');
@@ -231,7 +226,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(4)),
-          child: SeatListWidget(seats: seatsList, seatListBloc: _seatListBloc))
+          child: SeatListWidget(
+            seats: seatsList,
+          ))
     ];
   }
 

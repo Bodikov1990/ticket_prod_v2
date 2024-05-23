@@ -160,6 +160,36 @@ class S {
     );
   }
 
+  /// `Enter username`
+  String get enter_username {
+    return Intl.message(
+      'Enter username',
+      name: 'enter_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show log`
+  String get show_log {
+    return Intl.message(
+      'Show log',
+      name: 'show_log',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Authorization error`
   String get auth_login_error {
     return Intl.message(
@@ -390,6 +420,16 @@ class S {
     );
   }
 
+  /// `Ticket has been sent for refund.`
+  String get tickets_returned {
+    return Intl.message(
+      'Ticket has been sent for refund.',
+      name: 'tickets_returned',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `New ✅`
   String get new_ticket {
     return Intl.message(
@@ -405,6 +445,16 @@ class S {
     return Intl.message(
       'Successful!',
       name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sorry, reservation not found. Please check the entered reservation number and try again.`
+  String get reservation_not_found {
+    return Intl.message(
+      'Sorry, reservation not found. Please check the entered reservation number and try again.',
+      name: 'reservation_not_found',
       desc: '',
       args: [],
     );

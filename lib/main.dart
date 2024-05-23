@@ -23,7 +23,7 @@ enum Environment {
   PRODUCTION_UA,
 }
 
-const DEFAULT_ENV = Environment.PRODUCTION_UA;
+const DEFAULT_ENV = Environment.PRODUCTION;
 
 List<CameraDescription> cameras = [];
 
@@ -57,7 +57,7 @@ class _ScannerAppState extends State<ScannerApp> {
         listener: (context, state) {},
         builder: (context, state) {
           return MaterialApp.router(
-            // key: ValueKey(state.locale),
+            key: ValueKey(state.locale),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
               S.delegate,

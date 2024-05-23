@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Введіть IP-адресу"),
         "enter_rezervation_number":
             MessageLookupByLibrary.simpleMessage("Введіть номер бронювання"),
+        "enter_username":
+            MessageLookupByLibrary.simpleMessage("Введіть користувача"),
         "error": MessageLookupByLibrary.simpleMessage("Помилка!"),
         "hall": MessageLookupByLibrary.simpleMessage("Зал"),
         "in_the_hall": MessageLookupByLibrary.simpleMessage("У залі"),
@@ -57,13 +59,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "Будь ласка, перевірте, чи правильно ви ввели адресу сервера!"),
         "qr": MessageLookupByLibrary.simpleMessage("QR"),
         "repertoire": MessageLookupByLibrary.simpleMessage("Репертуар"),
+        "reservation_not_found": MessageLookupByLibrary.simpleMessage(
+            "Вибачте, бронювання не знайдено. Будь ласка, перевірте введений номер бронювання та спробуйте знову."),
         "rezervation_number":
             MessageLookupByLibrary.simpleMessage("Номер бронювання"),
         "row": MessageLookupByLibrary.simpleMessage("Ряд"),
+        "save": MessageLookupByLibrary.simpleMessage("Зберегти"),
         "seats": MessageLookupByLibrary.simpleMessage("Місця"),
         "seats_activating":
             MessageLookupByLibrary.simpleMessage("Активація місць..."),
         "settings": MessageLookupByLibrary.simpleMessage("Налаштування"),
+        "show_log": MessageLookupByLibrary.simpleMessage("Показати логи"),
         "sorry_dont_activated": MessageLookupByLibrary.simpleMessage(
             "Вибачте, час активації доступний за 30 хвилин до початку сеансу. Будь ласка, спробуйте пізніше."),
         "start_time": MessageLookupByLibrary.simpleMessage("Час початку"),
@@ -75,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Квитки вже активовані! ❗"),
         "tickets_count":
             MessageLookupByLibrary.simpleMessage("Кількість квитків"),
+        "tickets_returned": MessageLookupByLibrary.simpleMessage(
+            "Квиток відправлено на повернення."),
         "today": MessageLookupByLibrary.simpleMessage("Сьогодні"),
         "tomorrow": MessageLookupByLibrary.simpleMessage("Завтра"),
         "unknown_error":

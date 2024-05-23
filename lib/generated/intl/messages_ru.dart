@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Введите IP-адрес"),
         "enter_rezervation_number":
             MessageLookupByLibrary.simpleMessage("Введите номер брони"),
+        "enter_username":
+            MessageLookupByLibrary.simpleMessage("Введите пользователя"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка!"),
         "hall": MessageLookupByLibrary.simpleMessage("Зал"),
         "in_the_hall": MessageLookupByLibrary.simpleMessage("Находятся в зале"),
@@ -57,13 +59,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "Пожалуйста проверьте правильно ли заполнили адрес сервера!"),
         "qr": MessageLookupByLibrary.simpleMessage("QR"),
         "repertoire": MessageLookupByLibrary.simpleMessage("Репертуар"),
+        "reservation_not_found": MessageLookupByLibrary.simpleMessage(
+            "Извините, бронь не найдена. Пожалуйста, проверьте введенный номер брони и попробуйте снова."),
         "rezervation_number":
             MessageLookupByLibrary.simpleMessage("Номер брони"),
         "row": MessageLookupByLibrary.simpleMessage("Ряд"),
+        "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "seats": MessageLookupByLibrary.simpleMessage("Места"),
         "seats_activating":
             MessageLookupByLibrary.simpleMessage("Активация мест..."),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
+        "show_log": MessageLookupByLibrary.simpleMessage("Показать логи"),
         "sorry_dont_activated": MessageLookupByLibrary.simpleMessage(
             "Извините, время активации доступно за 30 минут до начала сеанса. Пожалуйста, попробуйте позже."),
         "start_time": MessageLookupByLibrary.simpleMessage("Начало сеанса"),
@@ -75,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Билеты уже активированы! ❗"),
         "tickets_count":
             MessageLookupByLibrary.simpleMessage("Количество билетов"),
+        "tickets_returned":
+            MessageLookupByLibrary.simpleMessage("Билет отправлен на возврат."),
         "today": MessageLookupByLibrary.simpleMessage("Сегодня"),
         "tomorrow": MessageLookupByLibrary.simpleMessage("Завтра"),
         "unknown_error":

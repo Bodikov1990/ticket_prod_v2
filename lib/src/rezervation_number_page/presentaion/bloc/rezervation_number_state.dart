@@ -5,7 +5,7 @@ abstract class RezervationNumberState extends Equatable {
   const RezervationNumberState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class RezervationNumberInitial extends RezervationNumberState {}
@@ -13,13 +13,13 @@ class RezervationNumberInitial extends RezervationNumberState {}
 class RezervationNumberLoadingState extends RezervationNumberState {}
 
 class RezervationGetUserSuccesState extends RezervationNumberState {
-  final UserModel userModel;
+  final String? prefix;
   const RezervationGetUserSuccesState({
-    required this.userModel,
+    required this.prefix,
   });
 
   @override
-  List<Object> get props => [userModel];
+  List<Object?> get props => [prefix];
 }
 
 class RezervationGetTicketSuccesState extends RezervationNumberState {

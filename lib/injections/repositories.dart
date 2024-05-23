@@ -17,8 +17,6 @@ import 'package:ticket_prod_v2/src/repertoire_page/repository/repertoire_reposit
 import 'package:ticket_prod_v2/src/rezervation_number_page/data/datasource/rezervation_number_remote_datasource.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/data/repositories/rezervation_number_repository_impl.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/repository/rezervation_number_repository.dart';
-import 'package:ticket_prod_v2/src/user/data/ropsitories/user_repository_impl.dart';
-import 'package:ticket_prod_v2/src/user/repository/user_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -31,8 +29,6 @@ void init() {
 
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(
       () => AuthenticationRemoteDataSourceImpl());
-
-  getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
 
   getIt.registerLazySingleton<MainQRRepository>(() => MainQRRepositoryImpl());
 
