@@ -134,6 +134,8 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                       onPressed: isEnabledBtn
                           ? () {
                               final number = _reservationNumber.text;
+                              GetIt.I<Talker>()
+                                  .debug('rezervation number $number');
                               BlocProvider.of<RezervationNumberBloc>(context)
                                   .add(RezervationGetNumberEvent(
                                       number: number.substring(2)));

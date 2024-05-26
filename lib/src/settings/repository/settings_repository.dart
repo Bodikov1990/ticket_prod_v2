@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticket_prod_v2/main.dart';
 import 'package:ticket_prod_v2/src/settings/data/models/settings_model.dart';

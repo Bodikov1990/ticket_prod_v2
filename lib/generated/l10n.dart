@@ -480,6 +480,16 @@ class S {
     );
   }
 
+  /// `Sorry, you need to select at least one seat to activate.`
+  String get sorry_empty_activate {
+    return Intl.message(
+      'Sorry, you need to select at least one seat to activate.',
+      name: 'sorry_empty_activate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No sessions on the selected date`
   String get empty_seance {
     return Intl.message(

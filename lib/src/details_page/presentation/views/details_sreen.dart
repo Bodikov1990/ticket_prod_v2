@@ -221,14 +221,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ),
       borderBuild(
           ticketStatus, TicketInfoWidget(label: S.current.seats, value: seats)),
+      const SizedBox(
+        height: 10,
+      ),
       Container(
           width: MediaQuery.of(context).size.width - 16,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(4)),
           child: SeatListWidget(
+            ticket: widget.ticket,
             seats: seatsList,
-          ))
+          )),
+      const SizedBox(
+        height: 56,
+      ),
     ];
   }
 

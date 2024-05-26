@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
-import 'package:ticket_prod_v2/src/details_page/domain/entities/activate_entity.dart';
 import 'package:ticket_prod_v2/src/details_page/domain/usecases/activate_usecase.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
 
@@ -24,20 +24,21 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
   }
 
   void _seatFilterEvent(SeatFilterEvent event, Emitter<SeatListState> emit) {
-    List<SeatEntity> soldSeat =
+    List<SeatEntity> soldSeats =
         event.seats.where((seat) => seat.status == "SOLD").toList();
-    debugPrint("--- Filtering seats, total seats: ${event.seats.length}");
-    for (SeatEntity seat in soldSeat) {
-      soldMapSeats[seat.discountName ?? ''] = soldSeat
+    GetIt.I<Talker>()
+        .debug("--- Filtering seats, total seats: ${event.seats.length}");
+    for (SeatEntity seat in soldSeats) {
+      soldMapSeats[seat.discountName ?? ''] = soldSeats
           .where((element) => element.discountName == seat.discountName)
           .toList();
 
-      allMapSeats[seat.discountName ?? ''] = soldSeat
+      allMapSeats[seat.discountName ?? ''] = soldSeats
           .where((element) => element.discountName == seat.discountName)
           .toList();
     }
 
-    debugPrint(
+    GetIt.I<Talker>().debug(
         "--- Sold seats: ${soldMapSeats.length}, All seats: ${allMapSeats.length}");
 
     List<SeatEntity> activatedSeat =
@@ -62,7 +63,8 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
 
       if (seatToAdd != null) {
         soldMapSeats.putIfAbsent(event.discountName, () => []).add(seatToAdd);
-        debugPrint("--- Seat added: ${seatToAdd.id} to ${event.discountName}");
+        GetIt.I<Talker>()
+            .debug("--- Seat added: ${seatToAdd.id} to ${event.discountName}");
 
         emit(SeatFilteredState(
             allMapSeats: allMapSeats,
@@ -80,7 +82,7 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
         temporaryStorage
             .putIfAbsent(event.discountName, () => [])
             .add(seatToRemove);
-        debugPrint(
+        GetIt.I<Talker>().debug(
             "--- Seat removed: ${seatToRemove.id} from ${event.discountName}");
 
         emit(SeatFilteredState(
@@ -93,23 +95,24 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
 
   Future<void> _seatActivateEvent(
       SeatActivateEvent event, Emitter<SeatListState> emit) async {
-    debugPrint("--- Discount values ${soldMapSeats.values.length}");
+    GetIt.I<Talker>()
+        .debug("--- Discount values ${soldMapSeats.values.length}");
     List<SeatEntity> newSeats = [];
     for (final seats in soldMapSeats.values) {
       for (SeatEntity seat in seats) {
-        debugPrint("--- Discount ID ${seat.id} ${seat.discountId}");
+        GetIt.I<Talker>()
+            .debug("--- Discount ID ${seat.id} ${seat.discountId}");
         final seatEntity = SeatEntity(
             id: seat.id, discountId: seat.discountId, zoneId: seat.zoneId);
         newSeats.add(seatEntity);
       }
     }
 
-    final activateEntity = ActivateEntity(seats: newSeats, comment: "");
-    debugPrint(
+    GetIt.I<Talker>().debug(
         "--- Activating seats: ${newSeats.length}, Ticket ID: ${event.ticketID}");
     emit(SeatListActivatingState());
-    final result = await _activateUseCase(ActivateUseCaseParams(
-        ticketID: event.ticketID, activateEntity: activateEntity));
+    final result = await _activateUseCase(
+        ActivateUseCaseParams(ticketID: event.ticketID, seats: newSeats));
 
     int? statusCode;
     result.fold(
@@ -118,10 +121,13 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
             title: S.current.success,
             message: S.current.congratulation_activate)));
 
-    debugPrint("--- Activating status code: $statusCode");
+    GetIt.I<Talker>().debug("--- Activating status code: $statusCode");
     if (statusCode == 410) {
       emit(SeatActivateErrorState(
           title: S.current.error, message: S.current.sorry_dont_activated));
+    } else if (statusCode == 400) {
+      emit(SeatActivateErrorState(
+          title: S.current.error, message: S.current.sorry_empty_activate));
     }
   }
 }

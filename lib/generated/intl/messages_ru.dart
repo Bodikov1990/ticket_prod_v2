@@ -72,6 +72,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "show_log": MessageLookupByLibrary.simpleMessage("Показать логи"),
         "sorry_dont_activated": MessageLookupByLibrary.simpleMessage(
             "Извините, время активации доступно за 30 минут до начала сеанса. Пожалуйста, попробуйте позже."),
+        "sorry_empty_activate": MessageLookupByLibrary.simpleMessage(
+            "Извините, для активации необходимо выбрать хотя бы одно место."),
         "start_time": MessageLookupByLibrary.simpleMessage("Начало сеанса"),
         "status": MessageLookupByLibrary.simpleMessage("Статус"),
         "success": MessageLookupByLibrary.simpleMessage("Успешно!"),

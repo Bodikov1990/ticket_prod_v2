@@ -2,13 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
-import 'package:ticket_prod_v2/src/details_page/data/models/activate_model.dart';
-import 'package:ticket_prod_v2/src/details_page/domain/entities/activate_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class DetailsRemoteDataSource {
   Future<void> activate(
-      {required String ticketID, required ActivateEntity activateEntity});
+      {required String ticketID, required List<SeatEntity> seats});
 }
 
 class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
@@ -17,8 +16,7 @@ class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
 
   @override
   Future<void> activate(
-      {required String ticketID,
-      required ActivateEntity activateEntity}) async {
+      {required String ticketID, required List<SeatEntity> seats}) async {
     final settings = await _repository.getSettings();
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${settings.accessToken}',
@@ -27,10 +25,16 @@ class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
     };
     _dio.options.headers = headers;
 
+    List<Map> seatsMap = seats.map((seat) {
+      return {
+        "id": seat.id ?? '',
+        'discount_id': seat.discountId ?? '',
+        "zone_id": seat.zoneId ?? ''
+      };
+    }).toList();
+
     final String url = '/api/ticket/$ticketID/activate';
-    final data = ActivateModel(
-            seats: activateEntity.seats, comment: activateEntity.comment)
-        .toJson();
+    final data = {"seats": seatsMap};
     try {
       Response response = await _dio.put(url, data: data);
 

@@ -2,16 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ticket_prod_v2/generated/l10n.dart';
 
+import 'package:ticket_prod_v2/generated/l10n.dart';
+import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 
 class SeatListWidget extends StatefulWidget {
+  final TicketEntity ticket;
   final List<SeatEntity>? seats;
 
   const SeatListWidget({
     Key? key,
+    required this.ticket,
     required this.seats,
   }) : super(key: key);
 
@@ -39,8 +43,8 @@ class _SeatListWidgetState extends State<SeatListWidget> {
         child: BlocListener<SeatListBloc, SeatListState>(
       listener: (context, state) {
         if (state is SeatActivateErrorState) {
-          // _showAlert(
-          //     context: context, title: state.title, content: state.message);
+          BlocProvider.of<DetailsBloc>(context)
+              .add(DetailsCheckTicketStatusEvent(ticketEntity: widget.ticket));
         } else if (state is SeatActivatedState) {
           // _showAlert(
           //     context: context, title: state.title, content: state.message);

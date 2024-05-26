@@ -42,6 +42,7 @@
   "reservation_not_found":"Sorry, reservation not found. Please check the entered reservation number and try again.",
   "congratulation_activate":"Congratulations! Your reservation has been successfully activated.",
   "sorry_dont_activated":"Sorry, activation time is available 30 minutes before the session starts. Please try later.",
+  "sorry_empty_activate":"Sorry, you need to select at least one seat to activate.",
   "empty_seance":"No sessions on the selected date",
   "today":"Today",
   "tomorrow":"Tomorrow",

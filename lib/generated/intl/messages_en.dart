@@ -72,6 +72,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "show_log": MessageLookupByLibrary.simpleMessage("Show log"),
         "sorry_dont_activated": MessageLookupByLibrary.simpleMessage(
             "Sorry, activation time is available 30 minutes before the session starts. Please try later."),
+        "sorry_empty_activate": MessageLookupByLibrary.simpleMessage(
+            "Sorry, you need to select at least one seat to activate."),
         "start_time": MessageLookupByLibrary.simpleMessage("Start time"),
         "status": MessageLookupByLibrary.simpleMessage("Status"),
         "success": MessageLookupByLibrary.simpleMessage("Successful!"),
