@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';

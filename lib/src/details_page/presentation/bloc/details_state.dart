@@ -1,11 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'details_bloc.dart';
 
-abstract class DetailsState extends Equatable {
+abstract class DetailsState {
   const DetailsState();
-
-  @override
-  List<Object> get props => [];
 }
 
 final class DetailsInitial extends DetailsState {}
@@ -17,9 +14,6 @@ class DetailsTicketStatusError extends DetailsState {
     required this.title,
     required this.message,
   });
-
-  @override
-  List<Object> get props => [title, message];
 }
 
 class DetailsTicketStatusNew extends DetailsState {
@@ -37,10 +31,6 @@ class DetailsTicketStatusNew extends DetailsState {
     required this.startTime,
     required this.seats,
   });
-
-  @override
-  List<Object> get props =>
-      [ticketEntity, ticketStatus, movieName, hallName, startTime, seats];
 }
 
 class DetailsTicketStatusActivated extends DetailsState {
@@ -60,8 +50,4 @@ class DetailsTicketStatusActivated extends DetailsState {
     required this.startTime,
     required this.seats,
   });
-
-  @override
-  List<Object> get props =>
-      [ticketStatus, movieName, hallName, startTime, seats];
 }

@@ -25,6 +25,9 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
   }
 
   void _seatFilterEvent(SeatFilterEvent event, Emitter<SeatListState> emit) {
+    _clearSeatsMap();
+    GetIt.I<Talker>()
+        .debug("---  _seatFilterEvent SeatListBloc ${event.seats.length}");
     List<SeatEntity> soldSeats =
         event.seats.where((seat) => seat.status == "SOLD").toList();
     GetIt.I<Talker>()

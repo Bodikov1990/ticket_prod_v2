@@ -66,9 +66,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
       },
       child: BlocListener<DetailsBloc, DetailsState>(
         listener: (listenerContext, state) {
-          _seatFilterEvent();
           if (state is DetailsTicketStatusActivated) {
             GetIt.I<Talker>().debug('--- SEATS ALREADY ACTIVATED');
+            _seatFilterEvent();
             _showAlert(
               contextMain: contextMain,
               title: state.alertTitle,
@@ -77,6 +77,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 widget.onTapActivate(true);
               },
             );
+          } else if (state is DetailsTicketStatusNew) {
+            _seatFilterEvent();
           }
         },
         child: BlocBuilder<DetailsBloc, DetailsState>(
@@ -249,6 +251,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _seatFilterEvent() {
+    GetIt.I<Talker>()
+        .debug("---  _seatFilterEvent ${widget.ticket.seats?.length}");
     BlocProvider.of<SeatListBloc>(context)
         .add(SeatFilterEvent(seats: widget.ticket.seats ?? []));
   }

@@ -6,12 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:ticket_prod_v2/core/viewmodels/constants.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 
 import 'package:ticket_prod_v2/src/repertoire_page/domain/entities/seance_info_model.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/presentation/bloc/repertoire_bloc.dart';
 import 'package:ticket_prod_v2/src/repertoire_page/presentation/views/seances_list_tile.dart';
+import 'package:ticket_prod_v2/src/repertoire_page/presentation/widgets/version_info_widget.dart';
 
 enum WeekDay { TODAY, TOMORROW }
 
@@ -76,10 +76,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
             showDialog(
                 context: context,
                 builder: (context) => const AlertDialog(
-                      title: Text(
-                        "Version $version",
-                        textAlign: TextAlign.center,
-                      ),
+                      title: VersionInfoWidget(),
                     ));
           },
           child: Text(
