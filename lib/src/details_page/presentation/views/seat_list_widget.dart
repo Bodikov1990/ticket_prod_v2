@@ -6,45 +6,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
+
 import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
 
-class SeatListWidget extends StatefulWidget {
+class SeatListWidget extends StatelessWidget {
   final TicketEntity ticket;
-  final List<SeatEntity>? seats;
 
   const SeatListWidget({
     Key? key,
     required this.ticket,
-    required this.seats,
   }) : super(key: key);
 
   @override
-  State<SeatListWidget> createState() => _SeatListWidgetState();
-}
-
-class _SeatListWidgetState extends State<SeatListWidget> {
-  @override
-  void initState() {
-    super.initState();
-    if (widget.seats != null) {
-      BlocProvider.of<SeatListBloc>(context)
-          .add(SeatFilterEvent(seats: widget.seats ?? []));
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.seats == null || (widget.seats?.isEmpty ?? true)) {
-      return Container();
-    }
-
     return SingleChildScrollView(
         child: BlocListener<SeatListBloc, SeatListState>(
       listener: (context, state) {
         if (state is SeatActivateErrorState) {
           BlocProvider.of<DetailsBloc>(context)
-              .add(DetailsCheckTicketStatusEvent(ticketEntity: widget.ticket));
+              .add(DetailsCheckTicketStatusEvent(ticketEntity: ticket));
         } else if (state is SeatActivatedState) {
           // _showAlert(
           //     context: context, title: state.title, content: state.message);
@@ -60,7 +40,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 4.0,
                 ),
                 Text(
-                  "${S.current.in_the_hall}: ${state.activatedMapSeats.values.length}",
+                  "${S.current.in_the_hall}: ${state.activatedSeats.length}",
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w400),
                 ),
@@ -68,7 +48,7 @@ class _SeatListWidgetState extends State<SeatListWidget> {
                   height: 8.0,
                 ),
                 Text(
-                  S.current.tickets,
+                  ticket.status == 3 ? "" : S.current.tickets,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4.0),

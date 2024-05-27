@@ -44,12 +44,16 @@ class DetailsTicketStatusNew extends DetailsState {
 }
 
 class DetailsTicketStatusActivated extends DetailsState {
+  final String alertTitle;
+  final String alertMessage;
   final String ticketStatus;
   final String movieName;
   final String hallName;
   final String startTime;
   final String seats;
   const DetailsTicketStatusActivated({
+    required this.alertTitle,
+    required this.alertMessage,
     required this.ticketStatus,
     required this.movieName,
     required this.hallName,

@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Всі квитки вже активовані!"),
         "auth_login_error":
             MessageLookupByLibrary.simpleMessage("Помилка авторизації"),
+        "back": MessageLookupByLibrary.simpleMessage("Назад"),
         "check_rezervation_number":
             MessageLookupByLibrary.simpleMessage("Перевірити бронювання"),
         "congratulation_activate": MessageLookupByLibrary.simpleMessage(
@@ -43,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_username":
             MessageLookupByLibrary.simpleMessage("Введіть користувача"),
         "error": MessageLookupByLibrary.simpleMessage("Помилка!"),
+        "go_back_screen":
+            MessageLookupByLibrary.simpleMessage("Хочете повернутися назад?"),
         "hall": MessageLookupByLibrary.simpleMessage("Зал"),
         "in_the_hall": MessageLookupByLibrary.simpleMessage("У залі"),
         "ip_address": MessageLookupByLibrary.simpleMessage("IP-адреса"),
@@ -52,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minute": MessageLookupByLibrary.simpleMessage("хвилина"),
         "movie": MessageLookupByLibrary.simpleMessage("Фільм"),
         "new_ticket": MessageLookupByLibrary.simpleMessage("Новий ✅"),
+        "no": MessageLookupByLibrary.simpleMessage("Ні"),
         "no_connection":
             MessageLookupByLibrary.simpleMessage("Немає зв\'язку з сервером"),
         "password": MessageLookupByLibrary.simpleMessage("Пароль"),
@@ -92,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "user_validation_password":
             MessageLookupByLibrary.simpleMessage("Неправильний пароль"),
         "users_not_found_error": MessageLookupByLibrary.simpleMessage(
-            "Неправильне ім\'я користувача")
+            "Неправильне ім\'я користувача"),
+        "yes": MessageLookupByLibrary.simpleMessage("Так")
       };
 }

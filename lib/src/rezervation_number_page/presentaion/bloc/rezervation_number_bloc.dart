@@ -16,11 +16,11 @@ class RezervationNumberBloc
   final SettingsRepository _settingsRepository = SettingsRepository();
 
   RezervationNumberBloc() : super(RezervationNumberInitial()) {
-    on<RezervationGetUserEvent>(_getUserEvent);
+    on<RezervationLoadingEvent>(_getUserEvent);
     on<RezervationGetNumberEvent>(_getNumberEvent);
   }
 
-  Future<void> _getUserEvent(RezervationGetUserEvent event,
+  Future<void> _getUserEvent(RezervationLoadingEvent event,
       Emitter<RezervationNumberState> emit) async {
     final settings = await _settingsRepository.getSettings();
 

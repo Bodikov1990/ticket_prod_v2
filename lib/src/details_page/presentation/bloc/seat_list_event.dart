@@ -29,3 +29,5 @@ class SeatActivateEvent extends SeatListEvent {
 
   SeatActivateEvent({required this.ticketID});
 }
+
+class SeatClearEvent extends SeatListEvent {}

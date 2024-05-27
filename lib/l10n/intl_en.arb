@@ -47,5 +47,9 @@
   "today":"Today",
   "tomorrow":"Tomorrow",
   "minute":"minute",
-  "min":"min"
+  "min":"min",
+  "back":"Back",
+  "go_back_screen": "Do you want to go back?",
+  "yes": "Yes",
+  "no":"No"
 }

@@ -26,7 +26,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<RezervationNumberBloc>(context)
-        .add(RezervationGetUserEvent());
+        .add(RezervationLoadingEvent());
     _reservationNumber.addListener(() {
       final inputString = _reservationNumber.text;
 
@@ -93,7 +93,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
                   onTapOk: (isBackTapped) {
                     if (isBackTapped) {
                       BlocProvider.of<RezervationNumberBloc>(context)
-                          .add(RezervationGetUserEvent());
+                          .add(RezervationLoadingEvent());
                     }
                   }));
             }
@@ -182,7 +182,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
             onPressed: () {
               Navigator.pop(context);
               BlocProvider.of<RezervationNumberBloc>(context)
-                  .add(RezervationGetUserEvent());
+                  .add(RezervationLoadingEvent());
             },
             child: const Text(
               'Ок',

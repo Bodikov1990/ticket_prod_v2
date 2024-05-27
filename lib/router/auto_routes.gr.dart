@@ -22,7 +22,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: DetailsScreen(
           key: args.key,
           ticket: args.ticket,
-          onTapOk: args.onTapOk,
+          onTapActivate: args.onTapOk,
         ),
       );
     },

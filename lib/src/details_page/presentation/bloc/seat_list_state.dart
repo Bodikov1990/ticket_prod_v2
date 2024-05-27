@@ -12,11 +12,11 @@ class SeatListActivatingState extends SeatListState {}
 class SeatFilteredState extends SeatListState {
   final Map<String, List<SeatEntity>> allMapSeats;
   final Map<String, List<SeatEntity>> soldMapSeats;
-  final Map<String, List<SeatEntity>> activatedMapSeats;
+  final List<SeatEntity> activatedSeats;
   const SeatFilteredState({
     required this.allMapSeats,
     required this.soldMapSeats,
-    required this.activatedMapSeats,
+    required this.activatedSeats,
   });
 }
 

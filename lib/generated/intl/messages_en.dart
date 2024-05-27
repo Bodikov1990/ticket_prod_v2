@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "All tickets already activated!"),
         "auth_login_error":
             MessageLookupByLibrary.simpleMessage("Authorization error"),
+        "back": MessageLookupByLibrary.simpleMessage("Back"),
         "check_rezervation_number":
             MessageLookupByLibrary.simpleMessage("Check reservation"),
         "congratulation_activate": MessageLookupByLibrary.simpleMessage(
@@ -43,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_username":
             MessageLookupByLibrary.simpleMessage("Enter username"),
         "error": MessageLookupByLibrary.simpleMessage("Error!"),
+        "go_back_screen":
+            MessageLookupByLibrary.simpleMessage("Do you want to go back?"),
         "hall": MessageLookupByLibrary.simpleMessage("Hall"),
         "in_the_hall": MessageLookupByLibrary.simpleMessage("In the hall"),
         "ip_address": MessageLookupByLibrary.simpleMessage("IP Address"),
@@ -52,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minute": MessageLookupByLibrary.simpleMessage("minute"),
         "movie": MessageLookupByLibrary.simpleMessage("Movie"),
         "new_ticket": MessageLookupByLibrary.simpleMessage("New ✅"),
+        "no": MessageLookupByLibrary.simpleMessage("No"),
         "no_connection":
             MessageLookupByLibrary.simpleMessage("No connection to server"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -92,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "user_validation_password":
             MessageLookupByLibrary.simpleMessage("Incorrect password"),
         "users_not_found_error":
-            MessageLookupByLibrary.simpleMessage("Invalid username")
+            MessageLookupByLibrary.simpleMessage("Invalid username"),
+        "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }

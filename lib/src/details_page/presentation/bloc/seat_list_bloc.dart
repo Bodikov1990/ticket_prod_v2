@@ -13,14 +13,15 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
 
   Map<String, List<SeatEntity>> allMapSeats = {};
   Map<String, List<SeatEntity>> soldMapSeats = {};
-  Map<String, List<SeatEntity>> activatedMapSeats = {};
   Map<String, List<SeatEntity>> temporaryStorage = {};
+  List<SeatEntity>? activatedSeats = [];
 
   SeatListBloc() : super(SeatListInitial()) {
     on<SeatFilterEvent>(_seatFilterEvent);
     on<SeatAddEvent>(_seatAddEvent);
     on<SeatRemoveEvent>(_seatRemoveEvent);
     on<SeatActivateEvent>(_seatActivateEvent);
+    on<SeatClearEvent>(_clearSeatsMapEvent);
   }
 
   void _seatFilterEvent(SeatFilterEvent event, Emitter<SeatListState> emit) {
@@ -41,19 +42,16 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     GetIt.I<Talker>().debug(
         "--- Sold seats: ${soldMapSeats.length}, All seats: ${allMapSeats.length}");
 
-    List<SeatEntity> activatedSeat =
+    activatedSeats =
         event.seats.where((seat) => seat.status == "SS_ACTIVATED").toList();
 
-    for (SeatEntity seat in activatedSeat) {
-      activatedMapSeats[seat.discountName ?? ''] = activatedSeat
-          .where((element) => element.discountName == seat.discountName)
-          .toList();
-    }
+    GetIt.I<Talker>()
+        .debug("--- SS_ACTIVATED seats: ${activatedSeats?.length ?? 0}");
 
     emit(SeatFilteredState(
         allMapSeats: allMapSeats,
         soldMapSeats: soldMapSeats,
-        activatedMapSeats: activatedMapSeats));
+        activatedSeats: activatedSeats ?? []));
   }
 
   void _seatAddEvent(SeatAddEvent event, Emitter<SeatListState> emit) {
@@ -69,7 +67,7 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
         emit(SeatFilteredState(
             allMapSeats: allMapSeats,
             soldMapSeats: soldMapSeats,
-            activatedMapSeats: activatedMapSeats));
+            activatedSeats: activatedSeats ?? []));
       }
     }
   }
@@ -88,7 +86,7 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
         emit(SeatFilteredState(
             allMapSeats: allMapSeats,
             soldMapSeats: soldMapSeats,
-            activatedMapSeats: activatedMapSeats));
+            activatedSeats: activatedSeats ?? []));
       }
     }
   }
@@ -107,6 +105,8 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
         newSeats.add(seatEntity);
       }
     }
+
+    _clearSeatsMap();
 
     GetIt.I<Talker>().debug(
         "--- Activating seats: ${newSeats.length}, Ticket ID: ${event.ticketID}");
@@ -129,5 +129,17 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
       emit(SeatActivateErrorState(
           title: S.current.error, message: S.current.sorry_empty_activate));
     }
+  }
+
+  void _clearSeatsMapEvent(SeatClearEvent event, Emitter<SeatListState> emit) {
+    _clearSeatsMap();
+  }
+
+  void _clearSeatsMap() {
+    GetIt.I<Talker>().debug("--- Cleared");
+    allMapSeats.clear();
+    soldMapSeats.clear();
+    activatedSeats?.clear();
+    temporaryStorage.clear();
   }
 }

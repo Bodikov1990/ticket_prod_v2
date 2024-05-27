@@ -10,7 +10,7 @@ abstract class RezervationNumberEvent extends Equatable {
 
 class RezervationInitialEvent extends RezervationNumberEvent {}
 
-class RezervationGetUserEvent extends RezervationNumberEvent {}
+class RezervationLoadingEvent extends RezervationNumberEvent {}
 
 class RezervationGetNumberEvent extends RezervationNumberEvent {
   final String number;

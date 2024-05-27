@@ -9,59 +9,40 @@ part 'details_event.dart';
 part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
-  TicketEntity _ticketEntity = const TicketEntity();
-
-  String ticketStatus = '';
-  String movieName = '';
-  String hallName = '';
-  String startTime = '';
-  String seats = '';
-
   DetailsBloc() : super(DetailsInitial()) {
     on<DetailsCheckTicketStatusEvent>(_checkTicketStatus);
   }
 
   Future<void> _checkTicketStatus(
       DetailsCheckTicketStatusEvent event, Emitter<DetailsState> emit) async {
-    _ticketEntity = event.ticketEntity;
-
-    if (_ticketEntity.status == 3) {
-      emit(DetailsTicketStatusError(
-          title: S.current.activated,
-          message: S.current.all_tickets_activated));
-      ticketStatus = S.current.tickets_activated;
-      movieName = _ticketEntity.movie ?? '';
-      hallName = _ticketEntity.hall ?? '';
-      startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
-      String seats = _buildSeatList(_ticketEntity.seats);
+    if (event.ticketEntity.status == 3) {
       emit(DetailsTicketStatusActivated(
-          ticketStatus: ticketStatus,
-          movieName: movieName,
-          hallName: hallName,
-          startTime: startTime,
-          seats: seats));
-    } else if (_ticketEntity.status == 2) {
-      ticketStatus = S.current.new_ticket;
-      movieName = _ticketEntity.movie ?? '';
-      hallName = _ticketEntity.hall ?? '';
-      startTime = DateFormat('HH:mm - dd.MM.yyyy').format(startTimeFromSource);
-      seats = _buildSeatList(_ticketEntity.seats);
+          alertTitle: S.current.activated,
+          alertMessage: S.current.all_tickets_activated,
+          ticketStatus: S.current.tickets_activated,
+          movieName: event.ticketEntity.movie ?? '',
+          hallName: event.ticketEntity.hall ?? '',
+          startTime: DateFormat('HH:mm - dd.MM.yyyy')
+              .format(_startTimeFromSource(event.ticketEntity)),
+          seats: _buildSeatList(event.ticketEntity.seats)));
+    } else if (event.ticketEntity.status == 2) {
       emit(DetailsTicketStatusNew(
-          ticketEntity: _ticketEntity,
-          movieName: movieName,
-          ticketStatus: ticketStatus,
-          hallName: hallName,
-          startTime: startTime,
-          seats: seats));
+          ticketEntity: event.ticketEntity,
+          movieName: event.ticketEntity.movie ?? '',
+          ticketStatus: S.current.new_ticket,
+          hallName: event.ticketEntity.hall ?? '',
+          startTime: DateFormat('HH:mm - dd.MM.yyyy')
+              .format(_startTimeFromSource(event.ticketEntity)),
+          seats: _buildSeatList(event.ticketEntity.seats)));
     }
   }
 
-  DateTime get startTimeFromSource {
+  DateTime _startTimeFromSource(TicketEntity ticketEntity) {
     try {
-      if (_ticketEntity.seanceDate == null) {
+      if (ticketEntity.seanceDate == null) {
         return DateTime.fromMicrosecondsSinceEpoch(0);
       } else {
-        return DateTime.parse(_ticketEntity.seanceDate?.substring(0, 19) ?? '');
+        return DateTime.parse(ticketEntity.seanceDate?.substring(0, 19) ?? '');
       }
     } catch (ignored) {
       return DateTime.fromMicrosecondsSinceEpoch(0);
