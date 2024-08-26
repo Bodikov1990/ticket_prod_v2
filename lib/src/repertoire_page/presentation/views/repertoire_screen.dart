@@ -229,7 +229,7 @@ class _RepertoireScreenState extends State<RepertoireScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              AutoRouter.of(context).pop();
+              AutoRouter.of(context).maybePop();
             },
             child: const Text(
               'Ок',

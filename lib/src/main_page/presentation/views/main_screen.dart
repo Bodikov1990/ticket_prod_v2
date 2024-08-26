@@ -30,8 +30,8 @@ class MainPage extends StatelessWidget {
             ),
             ElevatedButton(
               style: const ButtonStyle(
-                  foregroundColor: MaterialStatePropertyAll(
-                      Color.fromARGB(255, 31, 44, 67))),
+                  foregroundColor:
+                      WidgetStatePropertyAll(Color.fromARGB(255, 31, 44, 67))),
               onPressed: () {
                 AutoRouter.of(context).push(const QRScannerRoute());
               },

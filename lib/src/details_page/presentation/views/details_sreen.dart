@@ -98,7 +98,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   icon: const Icon(CupertinoIcons.back),
                   onPressed: () {
                     _clearSeatsEvent();
-                    AutoRouter.of(context).pop(true);
+                    AutoRouter.of(context).maybePop(true);
                   },
                 ),
                 title: Text(
@@ -147,9 +147,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStatePropertyAll(ThemeViewModel().mainBlue),
+                            WidgetStatePropertyAll(ThemeViewModel().mainBlue),
                         foregroundColor:
-                            const MaterialStatePropertyAll(Colors.white)),
+                            const WidgetStatePropertyAll(Colors.white)),
                     onPressed: () {
                       if (widget.ticket.status == 3) {
                         GetIt.I<Talker>().debug(
@@ -284,7 +284,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              AutoRouter.of(context).pop();
+              AutoRouter.of(context).maybePop();
               if (onOkPressed != null) {
                 onOkPressed();
               }
