@@ -8,7 +8,7 @@ part of 'seat_model.dart';
 
 SeatModel _$SeatModelFromJson(Map<String, dynamic> json) => SeatModel(
       id: json['id'] as String?,
-      price: json['price'] as int?,
+      price: (json['price'] as num?)?.toInt(),
       row: json['row'] as String?,
       seat: json['seat'] as String?,
       discountId: json['discount_id'] as String?,

@@ -10,7 +10,7 @@ ScheduleEntity _$ScheduleEntityFromJson(Map<String, dynamic> json) =>
     ScheduleEntity(
       id: json['id'] as String?,
       name: json['name'] as String?,
-      duration: json['duration'] as int?,
+      duration: (json['duration'] as num?)?.toInt(),
       certification: json['certification'] as String?,
       seances: (json['seances'] as List<dynamic>?)
           ?.map((e) => SeanceEntity.fromJson(e as Map<String, dynamic>))

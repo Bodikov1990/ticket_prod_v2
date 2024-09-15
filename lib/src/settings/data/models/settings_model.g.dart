@@ -23,7 +23,7 @@ SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
       ..cashierId = json['cashierId'] as String?
       ..expiredAt = json['expiredAt'] as String?
       ..prefix = json['prefix'] as String?
-      ..endTimeDuration = json['endTimeDuration'] as int?;
+      ..endTimeDuration = (json['endTimeDuration'] as num?)?.toInt();
 
 Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
     <String, dynamic>{

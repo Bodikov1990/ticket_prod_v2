@@ -19,9 +19,9 @@ enum WeekDay { TODAY, TOMORROW }
 class RepertoireScreen extends StatefulWidget {
   final DateTime? date;
   const RepertoireScreen({
-    Key? key,
+    super.key,
     this.date,
-  }) : super(key: key);
+  });
 
   @override
   State<RepertoireScreen> createState() => _RepertoireScreenState();

@@ -90,7 +90,7 @@ class _RezervationNumberScreenState extends State<RezervationNumberScreen> {
             } else {
               AutoRouter.of(context).push(DetailsRoute(
                   ticket: state.ticketEntity,
-                  onTapOk: (isBackTapped) {
+                  onTapActivate: (isBackTapped) {
                     if (isBackTapped) {
                       BlocProvider.of<RezervationNumberBloc>(context)
                           .add(RezervationLoadingEvent());

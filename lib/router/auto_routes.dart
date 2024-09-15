@@ -16,7 +16,7 @@ import 'package:ticket_prod_v2/src/tabbar/presentation/views/tab_bar_screen.dart
 part 'auto_routes.gr.dart';
 
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, path: '/'),

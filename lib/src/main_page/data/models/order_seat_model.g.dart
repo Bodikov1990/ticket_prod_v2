@@ -1,30 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'seat_entity.dart';
+part of 'order_seat_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SeatEntity _$SeatEntityFromJson(Map<String, dynamic> json) => SeatEntity(
+OrderSeatModel _$OrderSeatModelFromJson(Map<String, dynamic> json) =>
+    OrderSeatModel(
       id: json['id'] as String?,
+      zoneId: json['zone_id'] as String?,
       price: (json['price'] as num?)?.toInt(),
       row: json['row'] as String?,
-      seat: json['seat'] as String?,
+      col: json['col'] as String?,
       discountId: json['discount_id'] as String?,
       discountName: json['discount_name'] as String?,
-      status: json['status'] as String?,
-      zoneId: json['zone_id'] as String?,
+      status: (json['status'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$SeatEntityToJson(SeatEntity instance) =>
+Map<String, dynamic> _$OrderSeatModelToJson(OrderSeatModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'zone_id': instance.zoneId,
       'price': instance.price,
       'row': instance.row,
-      'seat': instance.seat,
+      'col': instance.col,
       'discount_id': instance.discountId,
       'discount_name': instance.discountName,
       'status': instance.status,
-      'zone_id': instance.zoneId,
     };

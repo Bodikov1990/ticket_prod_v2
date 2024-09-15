@@ -102,7 +102,7 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
           } else {
             AutoRouter.of(context).push(DetailsRoute(
                 ticket: state.ticketEntity,
-                onTapOk: (isBackTapped) {
+                onTapActivate: (isBackTapped) {
                   if (isBackTapped) {
                     _textScannerBloc.add(TextScannerGetPrefixEvent());
                   }

@@ -13,7 +13,7 @@ TicketModel _$TicketModelFromJson(Map<String, dynamic> json) => TicketModel(
       seanceDate: json['seance_date'] as String?,
       hall: json['hall'] as String?,
       contract: json['contract'] as String?,
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       seats: (json['seats'] as List<dynamic>?)
           ?.map((e) => SeatModel.fromJson(e as Map<String, dynamic>))
           .toList(),

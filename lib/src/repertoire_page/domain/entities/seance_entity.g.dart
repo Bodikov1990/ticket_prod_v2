@@ -10,7 +10,7 @@ SeanceEntity _$SeanceEntityFromJson(Map<String, dynamic> json) => SeanceEntity(
       id: json['id'] as String?,
       startTime: json['start_time'] as String?,
       endTime: json['end_time'] as String?,
-      duration: json['duration'] as int?,
+      duration: (json['duration'] as num?)?.toInt(),
       hall: json['hall'] == null
           ? null
           : HallEntity.fromJson(json['hall'] as Map<String, dynamic>),

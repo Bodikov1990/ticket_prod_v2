@@ -20,10 +20,10 @@ class DetailsScreen extends StatefulWidget {
   final void Function(bool) onTapActivate;
 
   const DetailsScreen({
-    Key? key,
+    super.key,
     required this.ticket,
     required this.onTapActivate,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -59,7 +59,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Widget build(BuildContext contextMain) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
           _clearSeatsEvent();
         }

@@ -66,7 +66,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         } else if (state is MainQrGetRezervationSuccesState) {
           AutoRouter.of(context).push(DetailsRoute(
               ticket: state.ticket,
-              onTapOk: (isBackTapped) {
+              onTapActivate: (isBackTapped) {
                 if (isBackTapped) {
                   debugPrint("IS BACK $isBackTapped");
                 }
