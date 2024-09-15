@@ -34,7 +34,7 @@ class TextScannerLoadingErrorState extends TextScannerState {
 }
 
 class TextScannerGetTicketSuccesState extends TextScannerState {
-  final TicketEntity ticketEntity;
+  final OrderEntity ticketEntity;
   TextScannerGetTicketSuccesState({
     required this.ticketEntity,
   });

@@ -6,11 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
-
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 
 class SeatListWidget extends StatelessWidget {
-  final TicketEntity ticket;
+  final OrderEntity ticket;
 
   const SeatListWidget({
     super.key,

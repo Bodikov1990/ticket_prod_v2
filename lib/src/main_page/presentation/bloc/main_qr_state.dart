@@ -13,7 +13,7 @@ final class MainQrGettingRezervationState extends MainQrState {
 }
 
 class MainQrGetRezervationSuccesState extends MainQrState {
-  final TicketEntity ticket;
+  final OrderEntity ticket;
 
   MainQrGetRezervationSuccesState({required this.ticket});
 

@@ -5,7 +5,7 @@ abstract class DetailsEvent {
 }
 
 final class DetailsCheckTicketStatusEvent extends DetailsEvent {
-  final TicketEntity ticketEntity;
+  final OrderEntity ticketEntity;
 
   const DetailsCheckTicketStatusEvent({required this.ticketEntity});
 }

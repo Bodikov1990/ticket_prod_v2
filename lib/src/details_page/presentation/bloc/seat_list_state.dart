@@ -10,9 +10,9 @@ class SeatListInitial extends SeatListState {}
 class SeatListActivatingState extends SeatListState {}
 
 class SeatFilteredState extends SeatListState {
-  final Map<String, List<SeatEntity>> allMapSeats;
-  final Map<String, List<SeatEntity>> soldMapSeats;
-  final List<SeatEntity> activatedSeats;
+  final Map<String, List<OrderSeatEntity>> allMapSeats;
+  final Map<String, List<OrderSeatEntity>> soldMapSeats;
+  final List<OrderSeatEntity> activatedSeats;
   const SeatFilteredState({
     required this.allMapSeats,
     required this.soldMapSeats,

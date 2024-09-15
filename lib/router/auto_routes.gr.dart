@@ -14,7 +14,7 @@ part of 'auto_routes.dart';
 class DetailsRoute extends PageRouteInfo<DetailsRouteArgs> {
   DetailsRoute({
     Key? key,
-    required TicketEntity ticket,
+    required OrderEntity ticket,
     required void Function(bool) onTapActivate,
     List<PageRouteInfo>? children,
   }) : super(
@@ -51,7 +51,7 @@ class DetailsRouteArgs {
 
   final Key? key;
 
-  final TicketEntity ticket;
+  final OrderEntity ticket;
 
   final void Function(bool) onTapActivate;
 

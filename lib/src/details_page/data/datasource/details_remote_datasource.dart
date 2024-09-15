@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_seat_entity.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class DetailsRemoteDataSource {
   Future<void> activate(
-      {required String ticketID, required List<SeatEntity> seats});
+      {required String ticketID, required List<OrderSeatEntity> seats});
 }
 
 class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
@@ -16,7 +16,7 @@ class DetailsRemoteDataSourceImpl implements DetailsRemoteDataSource {
 
   @override
   Future<void> activate(
-      {required String ticketID, required List<SeatEntity> seats}) async {
+      {required String ticketID, required List<OrderSeatEntity> seats}) async {
     final settings = await _repository.getSettings();
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${settings.accessToken}',

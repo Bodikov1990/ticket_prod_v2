@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 import 'package:ticket_prod_v2/src/rezervation_number_page/domain/usecases/get_number_rezervation_usecase.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 

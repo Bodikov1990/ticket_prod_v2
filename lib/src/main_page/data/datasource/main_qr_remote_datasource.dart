@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
-import 'package:ticket_prod_v2/src/main_page/data/models/ticket_model.dart';
+import 'package:ticket_prod_v2/src/main_page/data/models/order_model.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class MainQRRemoteDataSource {
-  Future<TicketModel> getRezervation(String id);
+  Future<OrderModel> getRezervation(String id);
 }
 
 class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
@@ -15,7 +15,7 @@ class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
   final SettingsRepository _repository = SettingsRepository();
 
   @override
-  Future<TicketModel> getRezervation(String id) async {
+  Future<OrderModel> getRezervation(String id) async {
     final settings = await _repository.getSettings();
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${settings.accessToken}',
@@ -33,7 +33,7 @@ class MainQRRemoteDataSourceImpl implements MainQRRemoteDataSource {
             statusCode: response.statusCode ?? 0);
       }
 
-      return TicketModel.fromJson(response.data);
+      return OrderModel.fromJson(response.data);
     } on APIExeption {
       rethrow;
     } catch (e) {

@@ -17,7 +17,7 @@ class DetailsTicketStatusError extends DetailsState {
 }
 
 class DetailsTicketStatusNew extends DetailsState {
-  final TicketEntity ticketEntity;
+  final OrderEntity ticketEntity;
   final String ticketStatus;
   final String movieName;
   final String hallName;

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_seat_entity.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
@@ -22,7 +22,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           movieName: event.ticketEntity.movie ?? '',
           hallName: event.ticketEntity.hall ?? '',
           startTime: DateFormat('HH:mm - dd.MM.yyyy')
-              .format(_startTimeFromSource(event.ticketEntity)),
+              .format(_startTimeFromSource(event.ticketEntity.seanceDate)),
           seats: _buildSeatList(event.ticketEntity.seats)));
     } else if (event.ticketEntity.status == 2) {
       emit(DetailsTicketStatusNew(
@@ -31,24 +31,24 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           ticketStatus: S.current.new_ticket,
           hallName: event.ticketEntity.hall ?? '',
           startTime: DateFormat('HH:mm - dd.MM.yyyy')
-              .format(_startTimeFromSource(event.ticketEntity)),
+              .format(_startTimeFromSource(event.ticketEntity.seanceDate)),
           seats: _buildSeatList(event.ticketEntity.seats)));
     }
   }
 
-  DateTime _startTimeFromSource(TicketEntity ticketEntity) {
+  DateTime _startTimeFromSource(String? seanceDate) {
     try {
-      if (ticketEntity.seanceDate == null) {
+      if (seanceDate == null) {
         return DateTime.fromMicrosecondsSinceEpoch(0);
       } else {
-        return DateTime.parse(ticketEntity.seanceDate?.substring(0, 19) ?? '');
+        return DateTime.parse(seanceDate.substring(0, 19));
       }
     } catch (ignored) {
       return DateTime.fromMicrosecondsSinceEpoch(0);
     }
   }
 
-  String _buildSeatList(List<SeatEntity>? seats) {
+  String _buildSeatList(List<OrderSeatEntity>? seats) {
     if (seats == null || seats.isEmpty) {
       return '';
     }
@@ -56,14 +56,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     Map<String, List<String>> seatRows = {};
 
     for (var seat in seats) {
-      if (seat.row == null || seat.seat == null) {
+      if (seat.row == null || seat.col == null) {
         continue;
       }
 
       if (!seatRows.containsKey(seat.row)) {
-        seatRows[seat.row!] = <String>[seat.seat!];
+        seatRows[seat.row!] = <String>[seat.col!];
       } else {
-        seatRows[seat.row!]!.add(seat.seat!);
+        seatRows[seat.row!]!.add(seat.col!);
       }
     }
 

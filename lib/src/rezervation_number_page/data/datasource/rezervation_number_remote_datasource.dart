@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ticket_prod_v2/core/errors/exeptions.dart';
-import 'package:ticket_prod_v2/src/main_page/data/models/ticket_model.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/data/models/order_model.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 import 'package:ticket_prod_v2/src/settings/repository/settings_repository.dart';
 
 abstract class RezervationNumberRemoteDataSource {
-  Future<TicketEntity> getRezervationNumber(String number);
+  Future<OrderEntity> getRezervationNumber(String number);
 }
 
 class RezervationNumberRemoteDataSourceImpl
@@ -16,11 +16,10 @@ class RezervationNumberRemoteDataSourceImpl
   final SettingsRepository _repository = SettingsRepository();
 
   @override
-  Future<TicketEntity> getRezervationNumber(String number) async {
+  Future<OrderEntity> getRezervationNumber(String number) async {
     final settings = await _repository.getSettings();
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${settings.accessToken}',
-      'User-Agent': 'ios'
     };
     _dio.options.headers = headers;
 
@@ -35,7 +34,7 @@ class RezervationNumberRemoteDataSourceImpl
             statusCode: response.statusCode ?? 0);
       }
 
-      return TicketModel.fromJson(response.data);
+      return OrderModel.fromJson(response.data);
     } on APIExeption {
       rethrow;
     } catch (e) {

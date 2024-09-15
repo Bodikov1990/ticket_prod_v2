@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 import 'package:ticket_prod_v2/src/main_page/domain/usecases/get_rezervation_usecase.dart';
 
 part 'main_qr_event.dart';
@@ -18,7 +18,7 @@ class MainQrBloc extends Bloc<MainQrEvent, MainQrState> {
       MainQrGetRezervationEvent event, Emitter<MainQrState> emit) async {
     final result =
         await _getRezervationUseCase(GetRezervationUseCaseParams(id: event.id));
-    TicketEntity? ticketEntity;
+    OrderEntity? ticketEntity;
     result.fold(
         (failure) =>
             emit(MainQrGetRezervationErrorState(message: failure.message)),
@@ -32,7 +32,7 @@ class MainQrBloc extends Bloc<MainQrEvent, MainQrState> {
     } else {
       if (ticketEntity != null) {
         emit(MainQrGetRezervationSuccesState(
-            ticket: ticketEntity ?? const TicketEntity()));
+            ticket: ticketEntity ?? const OrderEntity()));
       }
     }
   }

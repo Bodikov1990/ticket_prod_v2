@@ -23,7 +23,7 @@ class RezervationGetUserSuccesState extends RezervationNumberState {
 }
 
 class RezervationGetTicketSuccesState extends RezervationNumberState {
-  final TicketEntity ticketEntity;
+  final OrderEntity ticketEntity;
   const RezervationGetTicketSuccesState({
     required this.ticketEntity,
   });

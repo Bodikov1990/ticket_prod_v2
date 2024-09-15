@@ -6,7 +6,7 @@ abstract class SeatListEvent {
 }
 
 class SeatFilterEvent extends SeatListEvent {
-  final List<SeatEntity> seats;
+  final List<OrderSeatEntity> seats;
   const SeatFilterEvent({
     required this.seats,
   });

@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/src/details_page/domain/usecases/activate_usecase.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/seat_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_seat_entity.dart';
 
 part 'seat_list_event.dart';
 part 'seat_list_state.dart';
@@ -11,10 +11,10 @@ part 'seat_list_state.dart';
 class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
   late final ActivateUseCase _activateUseCase = ActivateUseCase();
 
-  Map<String, List<SeatEntity>> allMapSeats = {};
-  Map<String, List<SeatEntity>> soldMapSeats = {};
-  Map<String, List<SeatEntity>> temporaryStorage = {};
-  List<SeatEntity>? activatedSeats = [];
+  Map<String, List<OrderSeatEntity>> allMapSeats = {};
+  Map<String, List<OrderSeatEntity>> soldMapSeats = {};
+  Map<String, List<OrderSeatEntity>> temporaryStorage = {};
+  List<OrderSeatEntity>? activatedSeats = [];
 
   SeatListBloc() : super(SeatListInitial()) {
     on<SeatFilterEvent>(_seatFilterEvent);
@@ -28,11 +28,11 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     _clearSeatsMap();
     GetIt.I<Talker>()
         .debug("---  _seatFilterEvent SeatListBloc ${event.seats.length}");
-    List<SeatEntity> soldSeats =
-        event.seats.where((seat) => seat.status == "SOLD").toList();
+    List<OrderSeatEntity> soldSeats =
+        event.seats.where((seat) => seat.status == 4).toList();
     GetIt.I<Talker>()
         .debug("--- Filtering seats, total seats: ${event.seats.length}");
-    for (SeatEntity seat in soldSeats) {
+    for (OrderSeatEntity seat in soldSeats) {
       soldMapSeats[seat.discountName ?? ''] = soldSeats
           .where((element) => element.discountName == seat.discountName)
           .toList();
@@ -45,8 +45,7 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
     GetIt.I<Talker>().debug(
         "--- Sold seats: ${soldMapSeats.length}, All seats: ${allMapSeats.length}");
 
-    activatedSeats =
-        event.seats.where((seat) => seat.status == "SS_ACTIVATED").toList();
+    activatedSeats = event.seats.where((seat) => seat.status == 6).toList();
 
     GetIt.I<Talker>()
         .debug("--- SS_ACTIVATED seats: ${activatedSeats?.length ?? 0}");
@@ -98,13 +97,20 @@ class SeatListBloc extends Bloc<SeatListEvent, SeatListState> {
       SeatActivateEvent event, Emitter<SeatListState> emit) async {
     GetIt.I<Talker>()
         .debug("--- Discount values ${soldMapSeats.values.length}");
-    List<SeatEntity> newSeats = [];
+    List<OrderSeatEntity> newSeats = [];
     for (final seats in soldMapSeats.values) {
-      for (SeatEntity seat in seats) {
+      for (OrderSeatEntity seat in seats) {
         GetIt.I<Talker>()
             .debug("--- Discount ID ${seat.id} ${seat.discountId}");
-        final seatEntity = SeatEntity(
-            id: seat.id, discountId: seat.discountId, zoneId: seat.zoneId);
+        final seatEntity = OrderSeatEntity(
+            id: seat.id,
+            discountId: seat.discountId,
+            zoneId: seat.zoneId,
+            price: seat.price,
+            row: seat.row,
+            col: seat.col,
+            discountName: seat.discountName,
+            status: seat.status);
         newSeats.add(seatEntity);
       }
     }

@@ -12,11 +12,11 @@ import 'package:ticket_prod_v2/src/details_page/presentation/bloc/details_bloc.d
 import 'package:ticket_prod_v2/src/details_page/presentation/bloc/seat_list_bloc.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/views/seat_list_widget.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/views/ticket_info_widget.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 
 @RoutePage()
 class DetailsScreen extends StatefulWidget {
-  final TicketEntity ticket;
+  final OrderEntity ticket;
   final void Function(bool) onTapActivate;
 
   const DetailsScreen({

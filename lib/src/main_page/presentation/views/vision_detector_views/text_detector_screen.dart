@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:ticket_prod_v2/generated/l10n.dart';
 import 'package:ticket_prod_v2/router/auto_routes.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/bloc/text_scanner_bloc.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/detector_view.dart';
@@ -97,8 +98,7 @@ class _TextRecognizerScreenState extends State<TextRecognizerScreen> {
               state.ticketEntity.status == 4 ||
               state.ticketEntity.status == 5) {
             _showAlert(
-                title: 'Ошибка',
-                content: 'Билет отправлен на возврат. Спасибо за обращение!');
+                title: S.current.error, content: S.current.tickets_returned);
           } else {
             AutoRouter.of(context).push(DetailsRoute(
                 ticket: state.ticketEntity,

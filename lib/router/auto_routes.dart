@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket_prod_v2/src/authentication_page/presentation/views/login_screen.dart';
 import 'package:ticket_prod_v2/src/details_page/presentation/views/details_sreen.dart';
-import 'package:ticket_prod_v2/src/main_page/domain/entities/ticket_entity.dart';
+import 'package:ticket_prod_v2/src/main_page/domain/entities/order_entity.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/main_screen.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/qr_scanner_screen.dart';
 import 'package:ticket_prod_v2/src/main_page/presentation/views/vision_detector_views/text_detector_screen.dart';
